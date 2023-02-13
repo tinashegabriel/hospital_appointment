@@ -1,5 +1,6 @@
 import {Event} from "@material-ui/icons";
 import {useState} from 'react';
+import { Select, Option, Radio } from "@material-tailwind/react"
 
 const Appointments = ({onSendAppointment, lastId }) => {
     const clearData = {
@@ -30,6 +31,7 @@ const Appointments = ({onSendAppointment, lastId }) => {
         setToggleForm(!toggleForm);
     }
     const [selected,setSelected] = useState("");
+    const[open, setOpen] = useState("false");
 
     return (
         <div>
@@ -71,31 +73,19 @@ const Appointments = ({onSendAppointment, lastId }) => {
                                    className="max-w-lg block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:max-w-xs sm:text-sm border-gray-300 rounded-md"/>
                         </div>
                     </div>
-                    <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start  sm:pt-5">
+                    <div className="sm:grid sm:grid-cols-3 sm:gap-2 sm:items-start  sm:pt-5">
                         <label htmlFor="LastName" className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
                             Gender
                         </label>
-                        <div className="w-42 font-medium h-80">
-                        <div className="bg-gray-200 w-full p-2 flex items-center justify-center rounded">
-                           {selected ? selected : "Select Gender"} 
-                            </div>
-                        <ul className="bg-white mt-2">
-                            <li className="p-2 text-sm hover:bg-sky-600 hover:text-white"  onClick={()=> {setSelected = selected}}>Male</li>
-                            <li className="p-2 text-sm hover:bg-sky-600 hover:text-white">Female</li>
-                            <li className="p-2 text-sm hover:bg-sky-600 hover:text-white">Other</li>
-                           
-                        </ul>
+                            <div className="w-72 mt-1 sm:mt-0 sm:col-span-2">
+                                <Select label="Select Gender">
+                                    <Option>Male</Option>
+                                    <Option>Female</Option>
+                                    <Option>Other</Option>
+                                </Select>
+                                </div>
 
                         </div>
-                        {/* <div className="mt-1 sm:mt-0 sm:col-span-2">
-                            <input name="LastName" id="LastName"
-                                   onChange={(event) => {
-                                       setFormData({...formData, LastName: event.target.value})
-                                   }}
-                                   value={formData.LastName}
-                                   className="max-w-lg block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:max-w-xs sm:text-sm border-gray-300 rounded-md"/>
-                        </div> */}
-                    </div>
 
                     <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start  sm:pt-5">
                         <label htmlFor="email" className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
@@ -153,7 +143,29 @@ const Appointments = ({onSendAppointment, lastId }) => {
                         </div>
                     </div>
                     
+                    <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start  sm:pt-5"> 
+                     
+                    <p  className="block text-sm text-left font-medium text-gray-700 sm:mt-px sm:pt-2 ">Have you ever applied to our facility before?</p>
+                        <div className="flex gap-10 font-medium">
+                        <Radio id="yes" name="type" label="Yes" />
+                        <Radio id="no" name="type" label="No"  />
+                        </div>
+                    </div> 
+                    <div className="sm:grid sm:grid-cols-3 sm:gap-2 sm:items-start  sm:pt-5">
+                        <label htmlFor="LastName" className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
+                            Which procedure do you want to make an appointment for?
+                        </label>
+                            <div className="w-72 mt-1 sm:mt-0 sm:col-span-2">
+                                <Select label="Please Select">
+                                    <Option>Medical Examination</Option>
+                                    <Option>Doctor Check</Option>
+                                    <Option>Result Analysis</Option>
+                                    <Option>Check Up</Option>
+                                    <Option>X-Ray/Scan</Option>
+                                </Select>
+                                </div>
 
+                        </div>
                     <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start  sm:pt-5">
                         <label htmlFor="aptDate" className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
                             Preferred Appointment Date
@@ -166,26 +178,7 @@ const Appointments = ({onSendAppointment, lastId }) => {
                                    value={formData.aptDate}
                                    className="max-w-lg block w-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:max-w-xs sm:text-sm border-gray-300 rounded-md"/>
                         </div>
-                    </div>
-                    <div class="flex justify-center">
-                    <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start  sm:pt-5">    
-                    <p  className="block text-sm text-left font-medium text-gray-700 sm:mt-px sm:pt-2 ">Have you ever applied to our facility before?</p>
-                    <div>
-                        <div class="form-check">
-                        <input class="form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer" type="radio" name="flexRadioDefault" id="flexRadioDefault1"/>
-                        <label class="form-check-label inline-block text-gray-800" for="flexRadioDefault1">
-                            Yes
-                        </label>
-                        </div>
-                        <div class="form-check">
-                        <input class="form-check-input appearance-none rounded-full h-4 w-4 border border-gray-300 bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked/>
-                        <label class="form-check-label inline-block text-gray-800" for="flexRadioDefault2">
-                            No
-                        </label>
-                        </div>
-                    </div>
-                    </div>
-                    </div>
+                    </div>        
                     <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start  sm:pt-5">
                         <label htmlFor="aptTime" className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
                             Preferred Apointment Time
@@ -207,7 +200,7 @@ const Appointments = ({onSendAppointment, lastId }) => {
                         <div className="mt-1 sm:mt-0 sm:col-span-2">
             <textarea id="aptNotes" name="aptNotes" rows="3"
                       className="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 mt-1 block w-full sm:text-sm border-gray-300 rounded-md"
-                      placeholder="Detailed comments about the condition"
+                      placeholder="Detailed comments about symptoms"
                       onChange={(event) => {
                           setFormData({...formData, aptNotes: event.target.value})
                       }}
