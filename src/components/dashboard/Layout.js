@@ -5,6 +5,7 @@ import Sidebar from "./Sidebar";
 import PropTypes from 'prop-types'
 import { HomeRounded, AssignmentOutlined, Event,Chat, EventAvailable, Person  } from '@material-ui/icons'
 import Card from "./Card";
+import { Button } from "@material-tailwind/react";
 
 
 const Layout = (props) => {
@@ -23,12 +24,14 @@ const Layout = (props) => {
         <main className="flex flex-col h-full overflow-y-auto">
           {props.children}
           <div className="flex flex-wrap mt-8 mx-8">
+           
         <Card
           title="Appointments"
           subtitle="0"
           icon={() => <EventAvailable style={{ color: '#fff', fontSize: 40 }} />}
           bgIcon="bg-red-400"
-          button="Open"/>
+          button="Open"
+          />
         <Card
           title="Doctors Available"
           subtitle="0"
