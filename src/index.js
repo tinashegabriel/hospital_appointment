@@ -4,6 +4,7 @@ import './index.css';
 import App from './App';
 import Signup from './components/signup/Signup';
 import Layout from './components/dashboard/Layout';
+import Admin from './components/dashboard/admin';
 import {
   createBrowserRouter,
   RouterProvider,
@@ -28,7 +29,11 @@ const router = createBrowserRouter([
   {
   path: "appointments",
   element: <Appointments/>
-  }
+  },
+  {
+    path: "admin",
+    element: <Admin/>
+    }
 ])
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
