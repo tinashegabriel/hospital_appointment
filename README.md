@@ -1,6 +1,29 @@
-# Getting Started with Create React App
+# Hospital Appointment API
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+# GET STARTED BACKEND
+
+```shell
+cd hospital_app/
+```
+
+```shell
+python3 -m venv base
+```
+
+```shell
+source base/bin/activate
+```
+
+```shell
+pip3 install -r requirements.txt
+```
+
+```shell
+uvicorn hospital_app.app:app --host 127.0.0.1 --port 8022 --reload
+```
+# Getting Started with Create React Frontend App
+
 
 ## Available Scripts
 
