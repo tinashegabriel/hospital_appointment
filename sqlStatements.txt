@@ -1,0 +1,8 @@
+CREATE TABLE credentials (
+    id int NOT NULL,
+    user_id int NOT NULL,
+    password varchar(100),
+    create_date DATE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id),
+    FOREIGN KEY (user_id) REFERENCES patients(id)
+);

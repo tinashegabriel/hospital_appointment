@@ -1,9 +1,93 @@
-import React from "react";
-import { Link } from "react-router-dom";
-
+import React,{ useState }  from "react";
+import {Link, Navigate } from "react-router-dom";
+import { Redirect} from "react-router";
+import axios from 'axios';
+import swal from 'sweetalert';
+import Layout from '../dashboard/Layout';
 
 
 export default function Login() {
+    const [username, setName] = React.useState('');
+    const [password, setPassword] = React.useState('');
+    const [token, setToken] = React.useState('');
+
+
+    const onClickLogin = async () => {
+
+        try {
+
+            console.log(username)
+
+            const user = {
+                username: username
+            };
+
+
+            const payload = {
+                username: username,
+                password: password
+            };
+
+            const options = {
+                method: 'POST',
+                url: '/auth/login',
+                headers: { 'Content-Type': 'application/json' },
+                data: { ...payload }
+            };
+
+            let resp = await axios
+                .request(options)
+
+            let resp_data = resp.data
+            console.log(resp_data)
+
+            if (resp_data.code == 200) {
+
+                let res = {
+                    token: resp_data.payload.token,
+                    user,
+                };
+                setToken(resp_data.payload.token)
+                console.log(res)
+
+                swal({
+                    title: "Welcome",
+                    text: "You have successfully logged in!",
+                    icon: "success",
+                    button: "Proceed",
+                  }).then((value) => {
+                    console.log("We are trying to navigate")
+                    window.location.href = "/dashboard";
+                  })
+               
+                // return res;
+            } else if (resp_data.code == 400) {
+
+                swal({
+                    title: "Oops.., Sorry!!!",
+                    text: "Failed to loging, wrong username or password",
+                    icon: "error",
+                    button: "Retry",
+                  });
+                // return res;
+            }
+
+
+            console.log("null")
+
+            return null
+
+        } catch (error) {
+
+            console.log("Exception")
+            //console.log(error)
+
+            return null;
+        }
+
+    };
+
+
   return (
     <>
       <main>
@@ -49,6 +133,10 @@ export default function Login() {
                         </label>
                         <input
                           type="email"
+                          onChange={(e) => {
+                            setName(e.target.value);
+                          }}
+                          
                           className="border-0 px-3 py-3 placeholder-gray-400 text-gray-700 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full"
                           placeholder="Email"
                           style={{ transition: "all .15s ease" }}
@@ -64,6 +152,10 @@ export default function Login() {
                         </label>
                         <input
                           type="password"
+                          onChange={(e) => {
+                            setPassword(e.target.value);
+                          }}
+                          
                           className="border-0 px-3 py-3 placeholder-gray-400 text-gray-700 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full"
                           placeholder="Password"
                           style={{ transition: "all .15s ease" }}
@@ -84,16 +176,16 @@ export default function Login() {
                       </div>
 
                       <div className="text-center mt-6">
-                      <Link to="/dashboard">
+                      
                         <button
                           className="bg-gray-900 text-white active:bg-gray-700 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full"
                           type="button"
                           style={{ transition: "all .15s ease" }}
+                          onClick={() => onClickLogin()}
                           
                         >
                           Sign In
                         </button>
-                        </Link>
                       </div>
                     </form>
                   </div>

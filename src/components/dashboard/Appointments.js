@@ -1,8 +1,18 @@
 import {Event} from "@material-ui/icons";
 import {useState} from 'react';
 import { Select, Option, Radio } from "@material-tailwind/react"
+import Sidebar from "./Sidebar";
+import Topbar from "./Topbar";
+import Form from "./Form";
+
 
 const Appointments = ({onSendAppointment, lastId }) => {
+    const [isOpenSidebar, setIsOpenSidebar] = useState(false)
+
+    const toggleSidebar = () => {
+      setIsOpenSidebar(!isOpenSidebar)
+    }
+
     const clearData = {
         FirstName: '',
         LastName: '',
@@ -34,7 +44,23 @@ const Appointments = ({onSendAppointment, lastId }) => {
     const[open, setOpen] = useState("false");
 
     return (
-        <div>
+        <>
+            <div className="flex h-screen bg-gray-200">
+      <Sidebar isOpen={isOpenSidebar} />
+
+      <div className="flex flex-col flex-1 w-full">
+        <Topbar isOpenSidebar={isOpenSidebar} toggleSidebar={toggleSidebar} />
+
+        <main className="flex flex-col h-full overflow-y-auto">
+
+            <div className="flex flex-wrap mt-8 mx-8">
+           
+                <Form />
+            </div>
+        </main>
+      </div>
+    </div>
+        {/* <div>
             <button onClick={() => {
                 setToggleForm(!toggleForm)
             }}
@@ -220,8 +246,8 @@ const Appointments = ({onSendAppointment, lastId }) => {
                 </div>
                 </form>
             }
-        </div>
-        
+        </div> */}
+        </>
     )
 }
 

@@ -5,6 +5,8 @@ import App from './App';
 import Signup from './components/signup/Signup';
 import Layout from './components/dashboard/Layout';
 import Admin from './components/dashboard/admin';
+import Form from './components/dashboard/Form';
+
 import {
   createBrowserRouter,
   RouterProvider,
@@ -33,6 +35,11 @@ const router = createBrowserRouter([
   {
     path: "admin",
     element: <Admin/>
+    }
+    ,
+  {
+    path: "form",
+    element: <Form/>
     }
 ])
 const root = ReactDOM.createRoot(document.getElementById('root'));

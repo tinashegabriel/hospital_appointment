@@ -78,7 +78,8 @@ export default function Admin() {
           bgIcon="bg-red-400"
           button="Open"
           />
-            </main></>
+            </main>
+        </>
             
     )
 }
