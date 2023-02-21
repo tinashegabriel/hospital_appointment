@@ -6,6 +6,9 @@ import Signup from './components/signup/Signup';
 import Layout from './components/dashboard/Layout';
 import Admin from './components/dashboard/admin';
 import Form from './components/dashboard/Form';
+import AboutUs from './components/aboutus';
+import Calendar from './components/dashboard/Calendar';
+import Doctor from './components/dashboard/doctor';
 
 import {
   createBrowserRouter,
@@ -40,7 +43,24 @@ const router = createBrowserRouter([
   {
     path: "form",
     element: <Form/>
+    },
+    {
+      path: "aboutus",
+      element: <AboutUs/>
+    },
+    {
+      path: "calendar",
+      element: <Calendar/>
+    },
+    // {
+    //   path: "messages",
+    //   element: <Messages/>
+    // },
+    {
+      path: "doctor",
+      element: <Doctor/>
     }
+
 ])
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

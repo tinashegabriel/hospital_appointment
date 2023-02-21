@@ -1,0 +1,15 @@
+Metadata-Version: 2.1
+Name: paynow
+Version: 1.0.4
+Summary: Paynow Python SDK
+Home-page: https://gitlab.com/paynow-developer-hub/Paynow-Python-SDK
+Author: WebDev Projects
+Author-email: pkg-dev@webdevworld.com
+License: UNKNOWN
+Project-URL: Bug Reports, https://gitlab.com/paynow-developer-hub/Paynow-Python-SDK/issues
+Project-URL: Source, https://gitlab.com/paynow-developer-hub/Paynow-Python-SDK
+Requires-Dist: requests
+
+# Paynow Zimbabwe Python SDK
+
+

@@ -46,7 +46,7 @@ const Sidebar = ({ isOpen }) => {
                 className={`absolute inset-y-0 left-0 w-1 bg-${colorsClass.primary} rounded-tr-lg rounded-br-lg`}
               />
               <Link
-                to="/"
+                to="/calendar"
                 className="inline-flex items-center w-full text-sm font-semibold"
               >
                 <Event />
@@ -60,7 +60,7 @@ const Sidebar = ({ isOpen }) => {
                 className={`absolute inset-y-0 left-0 w-1 bg-${colorsClass.primary} rounded-tr-lg rounded-br-lg`}
               />
               <Link
-                to="/"
+                to="/messages"
                 className="inline-flex items-center w-full text-sm font-semibold"
               >
                 <Chat />
@@ -78,7 +78,7 @@ const Sidebar = ({ isOpen }) => {
                 className="inline-flex items-center w-full text-sm font-semibold"
               >
                 <EventAvailable />
-                <span className="ml-4">Appointments</span>
+                <span className="ml-4">Book Appointment</span>
               </Link>
             </li>
             <li

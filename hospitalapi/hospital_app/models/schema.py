@@ -42,3 +42,28 @@ class PatientDto(BaseModel):
     LastName: str
     EmailAddress: str
     Password: str
+
+class DoctorDto(BaseModel):
+    FirstName: str
+    LastName: str
+    Gender: Optional[str]
+    PhoneNumber: Optional[str]
+    EmailAddress: str
+    HomeAddress: Optional[str]
+    Password: str
+
+class AppointmentDto(BaseModel):
+    FirstName: str
+    LastName: str
+    EmailAddress: str
+    Phonenumber: str
+    D_O_B: str
+    Address: str
+    City: str
+    Applied_before: str
+    Procedure: str
+    Appointment_date: str
+    Appointment_time: str
+    Symptoms: str
+    
+

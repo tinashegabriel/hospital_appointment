@@ -30,7 +30,6 @@ const Layout = (props) => {
           subtitle="0"
           icon={() => <EventAvailable style={{ color: '#fff', fontSize: 40 }} />}
           bgIcon="bg-red-400"
-          button="Open"
           />
         <Card
           title="Doctors Available"

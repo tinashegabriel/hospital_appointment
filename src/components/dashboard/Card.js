@@ -14,7 +14,6 @@ const Card = ({ title, subtitle, icon, bgIcon}) => {
       <div className="flex flex-col ml-4">
         <p className="text-center text-bold text-xl lg:text-xl">{title}</p>
         <p className="font-light text-lg lg:text-xl italic">{subtitle}</p>
-        <Button size="sm">Open</Button>
       </div>
      
     </div>
