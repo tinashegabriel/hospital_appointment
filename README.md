@@ -1,6 +1,6 @@
 # Hospital Appointment API
 
-
+  
 # GET STARTED BACKEND
 
 ```shell
@@ -12,7 +12,8 @@ python3 -m venv base
 ```
 
 ```shell
-source base/bin/activate
+source base/bin/activate(Linux)
+base\scripts\activate.bat (Windows)
 ```
 
 ```shell

@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-export default function Navbar(props) {
+export default function Navbar (props) {
   const [navbarOpen, setNavbarOpen] = React.useState(false);
   return (
     <>
@@ -46,6 +46,52 @@ export default function Navbar(props) {
               to="/appointments"
             >
               Book Appointment
+            </Link>
+            <button
+              className="cursor-pointer text-xl leading-none px-3 py-1 border border-solid border-transparent rounded bg-transparent block lg:hidden outline-none focus:outline-none"
+              type="button"
+              onClick={() => setNavbarOpen(!navbarOpen)}
+            >
+              <i
+                className={
+                  (props.transparent ? "text-" : "text-gray-800") +
+                  " fas fa-bars"
+                }
+              ></i>
+            </button>
+          </div>
+          <div className="w-full relative flex justify-between lg:w-auto lg:static lg:block lg:justify-start">
+          <Link
+              className={
+                (props.transparent ? "text-gray-900" : "text-gray-800") +
+                " text-sm font-bold leading-relaxed inline-block mr-4 py-2 whitespace-nowrap uppercase"
+              }
+              to="/doctor"
+            >
+              Doctor
+            </Link>
+            <button
+              className="cursor-pointer text-xl leading-none px-3 py-1 border border-solid border-transparent rounded bg-transparent block lg:hidden outline-none focus:outline-none"
+              type="button"
+              onClick={() => setNavbarOpen(!navbarOpen)}
+            >
+              <i
+                className={
+                  (props.transparent ? "text-" : "text-gray-800") +
+                  " fas fa-bars"
+                }
+              ></i>
+            </button>
+          </div>
+          <div className="w-full relative flex justify-between lg:w-auto lg:static lg:block lg:justify-start">
+          <Link
+              className={
+                (props.transparent ? "text-gray-900" : "text-gray-800") +
+                " text-sm font-bold leading-relaxed inline-block mr-4 py-2 whitespace-nowrap uppercase"
+              }
+              to="/admin"
+            >
+              Admin
             </Link>
             <button
               className="cursor-pointer text-xl leading-none px-3 py-1 border border-solid border-transparent rounded bg-transparent block lg:hidden outline-none focus:outline-none"
@@ -158,6 +204,7 @@ export default function Navbar(props) {
               </li>
 
               <li className="flex items-center">
+                <Link to ="/aboutus">
                 <button
                   className={
                     (props.transparent
@@ -168,8 +215,10 @@ export default function Navbar(props) {
                   type="button"
                   style={{ transition: "all .15s ease" }}
                 >
-                  <i className="fas fa-arrow-alt-circle-down"></i> About Us
+                  <i className="fas fa-arrow-alt-circle-down">
+                    </i> About Us
                 </button>
+                </Link>
               </li>
             </ul>
           </div>
