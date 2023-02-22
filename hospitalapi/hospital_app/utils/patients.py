@@ -5,16 +5,58 @@ import requests
 import traceback
 from datetime import datetime, timedelta
 from random import randint
-from hospital_app.models.schema import MessageResponseItem, MessageResponsePayloadItem
-from hospital_app.utils.cgrates import *
+from hospital_app.models.schema import MessageResponseItem, MessageResponsePayloadItem,MessageResponseDto
+from hospital_app.utils.sendmail import MailSender
 from dateutil.relativedelta import relativedelta
 import math
-from hospital_app.utils.radius import radius_connection, ras_details
-from .constants import odoo_user, odoo_password, tenant, sms_url
+
+from .constants import *
 import pytz
 
 import mysql.connector
 from mysql.connector import Error
+
+def send_email(receipient, first_name,last_name, appointment_date, appointment_time, doctor_name):
+    plaintext = f"Dear: {first_name} {last_name} \n \n Please kindly note your appointment is on {appointment_date}  at {appointment_time}. \n \n Doctor: {doctor_name}"
+
+    ourmailsender = MailSender(
+        default_email, default_password, (smtp_server, smtp_port))
+
+    ourmailsender.set_message(plaintext, email_subject,
+                              default_email)
+
+    ourmailsender.set_recipients([receipient])
+
+    ourmailsender.connect()
+    ourmailsender.send_all()
+
+    return MessageResponseDto(message="Success", code=200)
+
+def send_emails():
+    import smtplib
+    from email.mime.text import MIMEText
+
+    sender_email = "gtinashe21@gmail.com"
+    sender_password = "ilukhdduintlmyxm"
+    recipient_email = "leog31d@gmail.com" 
+    subject = "Hello from Python"
+    body = """
+    <html>
+    <body>
+        <p>This is an <b>HTML</b> email sent from Python using the Gmail SMTP server.</p>
+    </body>
+    </html>
+    """
+    html_message = MIMEText(body, 'html')
+    html_message['Subject'] = subject
+    html_message['From'] = sender_email
+    html_message['To'] = recipient_email
+    server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
+    server.login(sender_email, sender_password)
+    server.sendmail(sender_email, recipient_email, html_message.as_string())
+    server.quit()
+    
+
 
 def connect():
     """ Connect to MySQL database """
@@ -236,7 +278,9 @@ def create_booking(email,firstName,lastName,emailAddress,phone,D_O_B,address,cit
 
                 last_id = mycursor.lastrowid
                 if last_id >0:
-
+                    email_sent = send_email(emailAddress,firstName, lastName, appointment_date, appointment_time, "R. Bumhudza")
+                    # email_sent = send_emails()
+                    print(email_sent)
                     db.close()
 
                     return MessageResponseItem(code=200, message="Appointment was created successfully")

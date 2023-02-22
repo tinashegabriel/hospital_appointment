@@ -10,6 +10,10 @@ class MessageResponseItem(BaseModel):
     message: str
     code: int
 
+class MessageResponseDto(BaseModel):
+    message: str
+    code: int
+
 
 class HTTPError(BaseModel):
     detail: str

@@ -49,7 +49,7 @@ export default function Login() {
                 };
                 setToken(resp_data.payload.token)
                 console.log(res)
-
+               
                 swal({
                     title: "Welcome",
                     text: "You have successfully logged in!",
@@ -57,6 +57,7 @@ export default function Login() {
                     button: "Proceed",
                   }).then((value) => {
                     console.log("We are trying to navigate")
+                    localStorage.setItem('accessToken', resp_data.payload.token);
                     window.location.href = "/dashboard";
                   })
                

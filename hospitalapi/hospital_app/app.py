@@ -181,7 +181,7 @@ async def forgot_password(emailAddress: str):
         raise HTTPException(status_code=500, detail=f"{e}")
 
 
-@app.get("/patients", responses={
+@app.get("/patient", responses={
     200: {"message": "Success", "data": {'phone': '1234'}, "code": 200},
     500: {"model": HTTPError, "description": "Raise"}
 },tags=["patient"])
