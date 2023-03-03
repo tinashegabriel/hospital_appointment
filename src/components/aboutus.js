@@ -24,29 +24,23 @@ export default function AboutUs() {
               backgroundRepeat: "no-repeat"
             }}
           ></div>
-              <Card className="w-96">
-                <CardHeader color="blue" className="relative h-56">
-                  <img
-                    src="/img/blog.jpg"
-                    alt="img-blur-shadow"
-                    className="h-full w-full"
-                  />
+              <Card className="w-96 mx-auto align-items-center">
+                <CardHeader >
+                  
                 </CardHeader>
                 <CardBody className="text-center">
                   <Typography variant="h5" className="mb-2">
-                    Cozy 5 Stars Apartment
+                   Self Service Hospital Appointment Booking System
                   </Typography>
                   <Typography>
-                    The place is close to Barceloneta Beach and bus stop just 2 min by
-                    walk and near to "Naviglio" where you can enjoy the main night life in
-                    Barcelona.
+                    A self service platform that offers simple and elegant remote services to hospitals. It allows patients to book appointments online and allows doctors to manage schedules easily
                   </Typography>
                 </CardBody>
                 <CardFooter divider className="flex items-center justify-between py-3">
-                  <Typography variant="small">$899/night</Typography>
+                  <Typography variant="small">Hospital</Typography>
                   <Typography variant="small" color="gray" className="flex gap-1">
                     <i className="fas fa-map-marker-alt fa-sm mt-[3px]" />
-                    Barcelona, Spain
+                    Zimbabwe
                   </Typography>
                 </CardFooter>
               </Card>

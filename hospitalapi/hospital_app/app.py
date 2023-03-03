@@ -12,9 +12,9 @@ app = FastAPI(
     version="1.0.0-dev",
     terms_of_service="https://gpimbs.co.zw",
     contact={
-        "name": "Leo & Ruvimbo The Developers",
+        "name": "Ruvimbo Bumhudza",
         "url": "http://gpimbs.co.zw",
-        "email": "developer@gpimbs.co.zw",
+        "email": "ruvimbobumhudza@gmail.com",
     },
 )
 

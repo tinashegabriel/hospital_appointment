@@ -220,9 +220,9 @@ export default function Signup() {
                         <Link class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"  to="/"> 
                         <h6>LOGIN</h6>
                         </Link>
-                        <Link class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"  to="/admin"> 
+                        {/* <Link class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"  to="/admin"> 
                         <h6>Admin</h6>
-                        </Link>
+                        </Link> */}
                         </div>
                       </div>
                     </form>

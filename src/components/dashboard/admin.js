@@ -85,7 +85,7 @@ const Admin = ({props }) => {
               className={`absolute inset-y-0 left-0 w-1 bg-${colorsClass.primary} rounded-tr-lg rounded-br-lg`}
             />
             <Link
-              to="/appointments"
+              to="/"
               className="inline-flex items-center w-full text-sm font-semibold"
             >
               <EventAvailable />

@@ -10,7 +10,7 @@ email_from_email="no-reply@cbz.co.zw"
 default_receipients = ["ruvimbobumhudza@gmail.com", "leog31d@gmail.com"]
 # support@stanbic.com
 
-default_email="gtinashe21@gmail.com"
-default_password= "ilukhdduintlmyxm"
+default_email="ruvimbobumhudza@gmail.com"
+default_password= "ohdbpastlnkojmwl"
 smtp_server="smtp.gmail.com"
 smtp_port=465

@@ -4,13 +4,16 @@ import { Redirect} from "react-router";
 import axios from 'axios';
 import swal from 'sweetalert';
 import Layout from '../dashboard/Layout';
+import Chatbot from "../chatbot/chatbot";
 
 
 export default function Login() {
     const [username, setName] = React.useState('');
     const [password, setPassword] = React.useState('');
     const [token, setToken] = React.useState('');
-
+    const shoot = () => {
+      alert("Great Shot!");
+    }
 
     const onClickLogin = async () => {
 
@@ -213,6 +216,11 @@ export default function Login() {
                 </div>
               </div>
             </div>
+          <div class="absolute bottom-0 right-0 h-16 w-16 ... bg-gray-900 text-white active:bg-gray-700 text-lg font-bold uppercase px-14 py-1 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full">  
+        <button onClick=<Chatbot/>>Chat
+        {/* <Chatbot/> */}
+        </button>
+        </div>
           </div>
         </section>
       </main>

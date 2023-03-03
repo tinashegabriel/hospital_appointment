@@ -115,14 +115,14 @@ export default function Navbar (props) {
           >
             <ul className="flex flex-col lg:flex-row list-none mr-auto">
               <li className="flex items-center">
-                <a
+                <Link
                   className={
                     (props.transparent
                       ? "lg:text-gray-900 lg:hover:text-gray-300 text-gray-800"
                       : "text-gray-800 hover:text-gray-600") +
                     " px-3 py-4 lg:py-2 flex items-center text-xs uppercase font-bold"
                   }
-                  href="https://www.creative-tim.com/learning-lab/tailwind-starter-kit#/login"
+                  to="/chatbot"
                 >
                   <i
                     className={
@@ -132,8 +132,8 @@ export default function Navbar (props) {
                       " far fa-file-alt text-lg leading-lg mr-2"
                     }
                   />{" "}
-                  View Doctors
-                </a>
+                  Chat
+                </Link>
               </li>
             </ul>
             <ul className="flex flex-col lg:flex-row list-none lg:ml-auto">

@@ -32,7 +32,7 @@ const Sidebar = ({ isOpen }) => {
               className={`relative px-6 py-3 hover:bg-${colorsClass.primary} hover:text-gray-600 transition-colors duration-500`}
             >
               <Link
-                to="/"
+                to="/patientmedicalform"
                 className="inline-flex items-center w-full text-sm font-semibold"
               >
                 <AssignmentOutlined />

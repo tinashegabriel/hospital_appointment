@@ -5,7 +5,7 @@ import { Button } from "@material-tailwind/react";
 const Card = ({ title, subtitle, icon, bgIcon}) => {
   const Icon = icon
   return (
-    <div className="flex items-stretch bg-white shadow-md m-4 py-12 px-18 w-full md:w-1/3 lg:w-1/4 rounded-md">
+    <div className="md-flex flex items-stretch bg-white shadow-md m-4 py-12 px-18 w-full md:w-1/3 lg:w-1/4 rounded-md">
       {icon && (
         <div className={`object-contain flex-shrink-2 items-center p-2 rounded-full ${bgIcon}`}>
           <Icon />

@@ -9,7 +9,7 @@ import Form from './components/dashboard/Form';
 import AboutUs from './components/aboutus';
 import Calendar from './components/dashboard/Calendar';
 import Doctor from './components/dashboard/doctor';
-
+import Chatbot from './components/chatbot/chatbot';
 import {
   createBrowserRouter,
   RouterProvider,
@@ -17,6 +17,8 @@ import {
   Route,
 } from "react-router-dom";
 import Appointments from './components/dashboard/Appointments';
+import DoctorAppointment from './components/dashboard/doctorappointment';
+import PatientMedicalForm from './components/dashboard/Patientmedicalform';
 
 const router = createBrowserRouter([
   {
@@ -59,6 +61,18 @@ const router = createBrowserRouter([
     {
       path: "doctor",
       element: <Doctor/>
+    },
+    {
+      path: "chatbot",
+      element: <Chatbot/>
+    },
+    {
+      path: "docappointments",
+      element: <DoctorAppointment/>
+    },
+    {
+      path: "patientmedicalform",
+      element: <PatientMedicalForm/>
     }
 
 ])
