@@ -5,15 +5,28 @@ import axios from 'axios';
 import swal from 'sweetalert';
 import Layout from '../dashboard/Layout';
 import Chatbot from "../chatbot/chatbot";
+import "../form.css";
+
 
 
 export default function Login() {
     const [username, setName] = React.useState('');
     const [password, setPassword] = React.useState('');
     const [token, setToken] = React.useState('');
-    const shoot = () => {
-      alert("Great Shot!");
-    }
+    function show(value){
+      document.getElementById("frame").innerHTML = "<iframe src=\""+ value+".html\" height=\"100%\" width=\"100%\" ></iframe>";
+  }
+  
+function openForm() {
+document.getElementById("myForm").style.display = "block";
+}
+
+function closeForm() {
+document.getElementById("myForm").style.display = "none";
+}
+    // const shoot = () => {
+    //   alert("Great Shot!");
+    // }
 
     const onClickLogin = async () => {
 
@@ -216,11 +229,16 @@ export default function Login() {
                 </div>
               </div>
             </div>
-          <div class="absolute bottom-0 right-0 h-16 w-16 ... bg-gray-900 text-white active:bg-gray-700 text-lg font-bold uppercase px-14 py-1 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full">  
-        <button onClick=<Chatbot/>>Chat
-        {/* <Chatbot/> */}
-        </button>
-        </div>
+         
+        <button class="open-button" onClick={() => openForm()}>Chat</button>
+        <div class="chat-popup" id="myForm">
+         <form class="form-container">
+      <Chatbot/>
+    {/* <label for="msg"><b>Message</b></label>
+    <textarea placeholder="Type message.." name="msg" required></textarea> */}
+    <button type="button" class="btn cancel" onClick={() => closeForm()}>Close</button>
+  </form>
+</div>
           </div>
         </section>
       </main>

@@ -10,6 +10,7 @@ import AboutUs from './components/aboutus';
 import Calendar from './components/dashboard/Calendar';
 import Doctor from './components/dashboard/doctor';
 import Chatbot from './components/chatbot/chatbot';
+import DoctorAvailable from './components/dashboard/DocsAvailable';
 import {
   createBrowserRouter,
   RouterProvider,
@@ -69,6 +70,10 @@ const router = createBrowserRouter([
     {
       path: "docappointments",
       element: <DoctorAppointment/>
+    },
+    {
+      path: "docavailable",
+      element: <DoctorAvailable/>
     },
     {
       path: "patientmedicalform",

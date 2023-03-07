@@ -5,17 +5,8 @@ class Chatbot extends Component {
   render() {
     return (
       <main>
-        <section className="absolute w-full h-full">
-          <div
-            className="absolute top-0 w-full h-full bg-gray-900"
-            style={{
-              backgroundImage:
-              "url('https://cdn.pixabay.com/photo/2021/10/11/17/37/doctor-6701410_960_720.jpg')",
-              backgroundSize: "100%",
-              backgroundRepeat: "no-repeat"
-            }}
-          >
-          </div>
+        <section class="form-container">
+          
       <ChatBot className="grid justify-items-center"
        steps={[
         {

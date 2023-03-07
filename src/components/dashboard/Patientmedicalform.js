@@ -29,7 +29,7 @@ const PatientMedicalForm = ({onSendAppointment, lastId }) => {
            
             <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start  sm:pt-5">
                         <label htmlFor="FirstName" className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
-                            First Name
+                            Member`s Name
                         </label>
                         <div className="mt-1 sm:mt-0 sm:col-span-2 h-10">
                             <input type="text" name="FirstName" id="FirstName"
