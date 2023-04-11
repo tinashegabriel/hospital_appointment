@@ -57,6 +57,7 @@ class DoctorDto(BaseModel):
     Password: str
 
 class AppointmentDto(BaseModel):
+    docIds: int
     FirstName: str
     LastName: str
     EmailAddress: str

@@ -11,6 +11,10 @@ import Calendar from './components/dashboard/Calendar';
 import Doctor from './components/dashboard/doctor';
 import Chatbot from './components/chatbot/chatbot';
 import DoctorAvailable from './components/dashboard/DocsAvailable';
+import Alogin from './components/login/Alogin';
+import ScheduleApp from './components/dashboard/schedulepage';
+import Dlogin from './components/login/Dlogin';
+
 import {
   createBrowserRouter,
   RouterProvider,
@@ -20,6 +24,7 @@ import {
 import Appointments from './components/dashboard/Appointments';
 import DoctorAppointment from './components/dashboard/doctorappointment';
 import PatientMedicalForm from './components/dashboard/Patientmedicalform';
+import DocSchedule from './components/schedules/docSchedule';
 
 const router = createBrowserRouter([
   {
@@ -78,7 +83,23 @@ const router = createBrowserRouter([
     {
       path: "patientmedicalform",
       element: <PatientMedicalForm/>
-    }
+    },
+    {
+      path: "alogin",
+      element: <Alogin/>
+    },
+    {
+      path: "schedule",
+      element: <ScheduleApp/>
+    },
+    {
+      path: "dlogin",
+      element: <Dlogin/>
+    },
+    {
+      path: "docschedule",
+      element: <DocSchedule/>
+    },
 
 ])
 const root = ReactDOM.createRoot(document.getElementById('root'));

@@ -1,9 +1,67 @@
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { MenuRounded, CloseRounded } from '@material-ui/icons'
+import axios from 'axios';
+import swal from 'sweetalert';
 
 const Topbar= ({ isOpenSidebar, toggleSidebar }) => {
+  const [firstName, setFirstName] = React.useState('');
+  const [lastName, setLastName] = React.useState('');
+  const [emailAddress, setEmailAddress] = React.useState('');
+  const [phone_number, setPhone] = React.useState('');
+  const [date_of_birth, setDateOfBirth] = React.useState('');
+  const [address, setAddress] = React.useState('');
+  const [city, setCity] = React.useState('');
   const [isOpenDropdownProfile, setIsOpenDropdownProfile] = useState(false)
+
+  useEffect(() => {
+    const getUser = async () => {
+          try {       
+
+            const options = {
+                method: 'GET',
+                url: '/patient',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('accessToken')}` 
+                }
+            };
+
+
+            let resp = await axios
+                .request(options)
+
+            let resp_data = resp.data
+
+            if (resp_data.code == 200) {
+
+              setFirstName(resp_data.payload.result[0].firstName)
+              setLastName(resp_data.payload.result[0].lastName)
+              setEmailAddress(resp_data.payload.result[0].emailAddress)
+                // return res;
+            } else if (resp_data.code == 400) {
+
+                swal({
+                    title: "Oops.., Sorry!!!",
+                    text: "Failed to lget the data !!!",
+                    icon: "error",
+                    button: "Cancel",
+                  });
+                // return res;
+            }
+
+            return null
+
+          } catch (error) {
+
+              console.log("Exception")
+              console.log(error)
+
+              return null;
+          }
+        };
+        getUser();
+  }, []);
 
   return (
     <header className="z-10 py-4 bg-white shadow-md">
@@ -48,14 +106,14 @@ const Topbar= ({ isOpenSidebar, toggleSidebar }) => {
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                       </svg>
                     </div>
-                    <span>Patient Mukawana</span>
+                    <span>{firstName} {lastName}</span>
                   </p>
                   
                   <p href="#" class="flex items-center transform transition-colors duration-200 border-r-4 border-transparent">
                     <div class="mr-3">
                       <svg class="h-6 w-6 text-black"  width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">  <path stroke="none" d="M0 0h24v24H0z"/>  <rect x="3" y="5" width="18" height="14" rx="2" />  <polyline points="3 7 12 13 21 7" /></svg>
                     </div>
-                    <span>pm@gmail.com</span>
+                    <span>{emailAddress}</span>
                   </p>
                   <p href="#" class="flex items-center transform transition-colors duration-200 border-r-4 border-transparent">
                     <div class="mr-3">

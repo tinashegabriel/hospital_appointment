@@ -38,7 +38,7 @@ export default function Navbar (props) {
             </button>
           </div>
           <div className="w-full relative flex justify-between lg:w-auto lg:static lg:block lg:justify-start">
-          <Link
+          {/* <Link
               className={
                 (props.transparent ? "text-gray-900" : "text-gray-800") +
                 " text-sm font-bold leading-relaxed inline-block mr-4 py-2 whitespace-nowrap uppercase"
@@ -46,7 +46,7 @@ export default function Navbar (props) {
               to="/appointments"
             >
               Book Appointment
-            </Link>
+            </Link> */}
             <button
               className="cursor-pointer text-xl leading-none px-3 py-1 border border-solid border-transparent rounded bg-transparent block lg:hidden outline-none focus:outline-none"
               type="button"
@@ -66,7 +66,7 @@ export default function Navbar (props) {
                 (props.transparent ? "text-gray-900" : "text-gray-800") +
                 " text-sm font-bold leading-relaxed inline-block mr-4 py-2 whitespace-nowrap uppercase"
               }
-              to="/doctor"
+              to="/dlogin"
             >
               Doctor
             </Link>
@@ -89,7 +89,7 @@ export default function Navbar (props) {
                 (props.transparent ? "text-gray-900" : "text-gray-800") +
                 " text-sm font-bold leading-relaxed inline-block mr-4 py-2 whitespace-nowrap uppercase"
               }
-              to="/admin"
+              to="/alogin"
             >
               Admin
             </Link>
@@ -113,7 +113,7 @@ export default function Navbar (props) {
             }
             id="example-navbar-warning"
           >
-            <ul className="flex flex-col lg:flex-row list-none mr-auto">
+            {/* <ul className="flex flex-col lg:flex-row list-none mr-auto">
               <li className="flex items-center">
                 <Link
                   className={
@@ -135,7 +135,7 @@ export default function Navbar (props) {
                   Chat
                 </Link>
               </li>
-            </ul>
+            </ul> */}
             <ul className="flex flex-col lg:flex-row list-none lg:ml-auto">
               <li className="flex items-center">
                 <a

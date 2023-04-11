@@ -291,7 +291,8 @@ async def book_appointment(appointmentDto: AppointmentDto=Body(...), jwt_token =
         jwt_token = jwt.decode(jwt_token.credentials, SECRET, algorithms=["HS256"])
         email = jwt_token['emailAddress']
 
-        result = create_booking(email,appointmentDto.FirstName, 
+        result = create_booking(email,appointmentDto.docIds,
+                                    appointmentDto.FirstName, 
                                     appointmentDto.LastName, 
                                     appointmentDto.EmailAddress,
                                     appointmentDto.Phonenumber,
@@ -345,6 +346,32 @@ async def update_appointment(changePinDto: ChangePasswordDto = Body(...),jwt_tok
 
     except Exception as e:
 
+        raise HTTPException(status_code=500, detail=f"{e}")
+
+@app.get("/doctors", responses={
+    200: {"message": "Success", "data": {'phone': '1234'}, "code": 200},
+    500: {"model": HTTPError, "description": "Raise"}
+},tags=["doctors"])
+async def get_doctors(jwt_token = Depends(http_scheme)):
+    try:
+        jwt_token = jwt.decode(jwt_token.credentials, SECRET, algorithms=["HS256"])
+        emailAddress = jwt_token['emailAddress']
+        req = get_user_doctors(emailAddress)
+
+        match req.code:
+            case 200:
+                return MessageResponsePayloadItem(message = 'Success',payload = req.payload, code = 200)
+            
+            case 404:
+                return MessageResponseItem(code=405, message="User not found")
+
+            case _:
+                return MessageResponseItem(code=500, message="Unknown error")
+
+    except jwt.exceptions.InvalidSignatureError:
+        raise HTTPException(status_code=403, detail="Not Valid")
+
+    except Exception as e:
         raise HTTPException(status_code=500, detail=f"{e}")
 
 @app.get("/admin/refresh_roken", tags=["admin"])
@@ -442,6 +469,130 @@ async def admin_login(loginDto: LoginDto = Body(...)):
         traceback.print_exc()
     
         raise HTTPException(status_code=500, detail=f"{e}")
+    
+@app.get("/admin/appointments", tags=["admin"])
+async def appointments(jwt_token = Depends(http_scheme)):
+    try:
+        emailAddress = "loginDto.username"
+
+        password = "loginDto.password"
+        
+        req = login_admins(emailAddress,password)
+
+        print(req)
+
+        match req.code:
+            case 200:
+                result = hashlib.md5(password.encode())
+                if req.payload["result"][0]["password"] == result.hexdigest():
+                    expires = (datetime.now() + timedelta(hours=24)).timestamp()
+                    jwt_token = jwt.encode({"emailAddress": str(emailAddress), "exp": expires}, SECRET, algorithm="HS256")
+
+                
+                    return MessageResponsePayloadItem(message = 'Success', payload = {"token": jwt_token, 
+                                                                                      "expires": expires,
+                                                                                      }, code = 200)
+                
+                elif req.payload["result"][0]["password"] != loginDto.password:
+
+                    return MessageResponseItem(code=400, message="Wrong username or password")
+
+            case 203:
+                return MessageResponseItem(code=400, message="Wrong username or password")
+        
+            case 400:
+                return MessageResponseItem(code=405, message="User not found")
+
+            case _:
+                return MessageResponseItem(code=500, message="Unknown error")
+    
+    except Exception as e:
+        traceback.print_exc()
+    
+        raise HTTPException(status_code=500, detail=f"{e}")
+
+@app.get("/admin/doctors", tags=["admin"])
+async def doctors(jwt_token = Depends(http_scheme)):
+    try:
+        emailAddress = "loginDto.username"
+
+        password = "loginDto.password"
+        
+        req = login_admins(emailAddress,password)
+
+        print(req)
+
+        match req.code:
+            case 200:
+                result = hashlib.md5(password.encode())
+                if req.payload["result"][0]["password"] == result.hexdigest():
+                    expires = (datetime.now() + timedelta(hours=24)).timestamp()
+                    jwt_token = jwt.encode({"emailAddress": str(emailAddress), "exp": expires}, SECRET, algorithm="HS256")
+
+                
+                    return MessageResponsePayloadItem(message = 'Success', payload = {"token": jwt_token, 
+                                                                                      "expires": expires,
+                                                                                      }, code = 200)
+                
+                elif req.payload["result"][0]["password"] != loginDto.password:
+
+                    return MessageResponseItem(code=400, message="Wrong username or password")
+
+            case 203:
+                return MessageResponseItem(code=400, message="Wrong username or password")
+        
+            case 400:
+                return MessageResponseItem(code=405, message="User not found")
+
+            case _:
+                return MessageResponseItem(code=500, message="Unknown error")
+    
+    except Exception as e:
+        traceback.print_exc()
+    
+        raise HTTPException(status_code=500, detail=f"{e}")
+
+@app.get("/admin/patients", tags=["admin"])
+async def patients(jwt_token = Depends(http_scheme)):
+    try:
+        emailAddress = ""
+
+        password = ""
+        
+        req = login_admins(emailAddress,password)
+
+        print(req)
+
+        match req.code:
+            case 200:
+                result = hashlib.md5(password.encode())
+                if req.payload["result"][0]["password"] == result.hexdigest():
+                    expires = (datetime.now() + timedelta(hours=24)).timestamp()
+                    jwt_token = jwt.encode({"emailAddress": str(emailAddress), "exp": expires}, SECRET, algorithm="HS256")
+
+                
+                    return MessageResponsePayloadItem(message = 'Success', payload = {"token": jwt_token, 
+                                                                                      "expires": expires,
+                                                                                      }, code = 200)
+                
+                elif req.payload["result"][0]["password"] != loginDto.password:
+
+                    return MessageResponseItem(code=400, message="Wrong username or password")
+
+            case 203:
+                return MessageResponseItem(code=400, message="Wrong username or password")
+        
+            case 400:
+                return MessageResponseItem(code=405, message="User not found")
+
+            case _:
+                return MessageResponseItem(code=500, message="Unknown error")
+    
+    except Exception as e:
+        traceback.print_exc()
+    
+        raise HTTPException(status_code=500, detail=f"{e}")
+
 
 @app.post("/doctor/login", tags=["admin"])
 async def _login(loginDto: LoginDto = Body(...)):
@@ -577,7 +728,34 @@ async def get_doctor_appointments(jwt_token = Depends(http_scheme)):
     try:
         jwt_token = jwt.decode(jwt_token.credentials, SECRET, algorithms=["HS256"])
         emailAddress = jwt_token['emailAddress']
-        req = get_user_appointments(emailAddress)
+        print(f"Email yasvika iyi {emailAddress}")
+        req = get_doc_appointments(emailAddress)
+
+        match req.code:
+            case 200:
+                return MessageResponsePayloadItem(message = 'Success',payload = req.payload, code = 200)
+            
+            case 404:
+                return MessageResponseItem(code=405, message="User not found")
+
+            case _:
+                return MessageResponseItem(code=500, message="Unknown error")
+
+    except jwt.exceptions.InvalidSignatureError:
+        raise HTTPException(status_code=403, detail="Not Valid")
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"{e}")
+
+@app.get("/doctor/calender", responses={
+    200: {"message": "Success", "data": {'phone': '1234'}, "code": 200},
+    500: {"model": HTTPError, "description": "Raise"}
+},tags=["admin"])
+async def get_doctor_calender(jwt_token = Depends(http_scheme)):
+    try:
+        jwt_token = jwt.decode(jwt_token.credentials, SECRET, algorithms=["HS256"])
+        emailAddress = jwt_token['emailAddress']
+        req = get_doc_calender(emailAddress)
 
         match req.code:
             case 200:

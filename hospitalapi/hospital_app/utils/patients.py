@@ -3,7 +3,7 @@ import hashlib
 import json
 import requests
 import traceback
-from datetime import datetime, timedelta
+import datetime
 from random import randint
 from hospital_app.models.schema import MessageResponseItem, MessageResponsePayloadItem,MessageResponseDto
 from hospital_app.utils.sendmail import MailSender
@@ -239,7 +239,7 @@ def get_user_info(emailAddress):
         if db is not None and db.is_connected():
             db.close()
 
-def create_booking(email,firstName,lastName,emailAddress,phone,D_O_B,address,city,applied_before,procedure, appointment_date,appointment_time,symptoms):
+def create_booking(email,doctor_id,firstName,lastName,emailAddress,phone,D_O_B,address,city,applied_before,procedure, appointment_date,appointment_time,symptoms):
     db = None
     try:
         db = connect()
@@ -264,9 +264,9 @@ def create_booking(email,firstName,lastName,emailAddress,phone,D_O_B,address,cit
             
             else:
 
-                sql = "INSERT INTO appointments (user_id,first_name, last_name, date_of_birth, email_address, phone_number, home_address, city, applied_bofore, appointment_procedure, appointment_date, appointment_time, symptoms) VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+                sql = "INSERT INTO appointments (user_id,doctor_id,first_name, last_name, date_of_birth, email_address, phone_number, home_address, city, applied_bofore, appointment_procedure, appointment_date, appointment_time, symptoms) VALUES ( %s,  %s,%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
 
-                val = (record[0],firstName,lastName,D_O_B,emailAddress,phone,address,city,applied_before,procedure,appointment_date,appointment_time,symptoms)
+                val = (record[0],1,firstName,lastName,D_O_B,emailAddress,phone,address,city,applied_before,procedure,appointment_date,appointment_time,symptoms)
 
                 mycursor.execute(sql, val)
 
@@ -369,6 +369,227 @@ def get_user_appointments(emailAddress):
     finally:
         if db is not None and db.is_connected():
             db.close()
+
+def get_user_doctors(emailAddress):
+    db = None
+    try:
+        db = connect()
+
+        print(db)
+
+        if db != None:
+            mycursor = db.cursor()
+            print("1")
+
+            sql = "SELECT * FROM patients WHERE email_address = %s "
+
+            val = (emailAddress,)
+
+            mycursor.execute(sql, val)
+
+            myresult = mycursor.fetchone()
+
+            
+
+            data = []
+            if not myresult:
+                return MessageResponseItem(code=203, message="Account does not exists")
+            else:
+                print(myresult[0])
+
+                sql = "SELECT * FROM doctors"
+
+                user_id= myresult[0]
+
+                val = (user_id,)
+
+                mycursor.execute(sql)
+
+                records = mycursor.fetchall()
+
+                db.close()
+
+                for record in records:
+                    
+                    result_list = {
+                            "id": record[0],
+                            "first_name": record[1],
+                            "last_name": record[2],
+                            "gender": record[3],
+                            "phone_number": record[4],
+                            "address": record[5],
+
+                            }
+
+                    data.append(result_list)
+
+                print(data)
+
+                return MessageResponsePayloadItem(code=200, message="User logged in successfully", payload={
+                "result": data
+                })
+
+
+        return MessageResponseItem(code=400, message="Account already exists")
+            
+    except Exception as e:
+        traceback.print_exc()
+        raise Exception(f"Exception: (create_patient) -> {e}")
+    finally:
+        if db is not None and db.is_connected():
+            db.close()
+
+def get_doc_appointments(emailAddress):
+    db = None
+    try:
+        db = connect()
+
+        print(db)
+
+        if db != None:
+            mycursor = db.cursor()
+            print("1")
+
+            sql = "SELECT doctor_id FROM ad_credentials WHERE email_address = %s "
+
+            val = (emailAddress,)
+
+            mycursor.execute(sql, val)
+
+            myresult = mycursor.fetchone()
+
+            print(f"Maresults aya {myresult}")
+
+            data = []
+            if not myresult:
+                return MessageResponseItem(code=203, message="Account does not exists")
+            else:
+                print(myresult[0])
+
+                sql = "SELECT * FROM appointments WHERE doctor_id = %s "
+
+                user_id= myresult[0]
+
+                val = (user_id,)
+
+                mycursor.execute(sql, val)
+
+                records = mycursor.fetchall()
+
+                db.close()
+
+                for record in records:
+                    
+                    result_list = {
+                            "id": record[0],
+                            "first_name": record[3],
+                            "last_name": record[4],
+                            "date_of_birth": record[5],
+                            "email_address": record[6],
+                            "phone_number": record[7],
+                            "address": record[8],
+                            "city": record[9],
+                            "applied_before": record[10],
+                            "procedure": record[11],
+                            "appointment_date": record[12],
+                            "appointment_time": record[13],
+                            "symptoms": record[14]
+                            }
+
+                    data.append(result_list)
+
+                print(data)
+
+                return MessageResponsePayloadItem(code=200, message="User logged in successfully", payload={
+                "result": data
+                })
+
+
+        return MessageResponseItem(code=400, message="Account already exists")
+            
+    except Exception as e:
+        traceback.print_exc()
+        raise Exception(f"Exception: (create_patient) -> {e}")
+    finally:
+        if db is not None and db.is_connected():
+            db.close()
+
+
+
+def get_doc_calender(emailAddress):
+    db = None
+    try:
+        db = connect()
+
+        print(db)
+
+        if db != None:
+            mycursor = db.cursor()
+            print("1")
+
+            sql = "SELECT doctor_id FROM ad_credentials WHERE email_address = %s "
+
+            val = (emailAddress,)
+
+            mycursor.execute(sql, val)
+
+            myresult = mycursor.fetchone()
+
+            
+
+            data = []
+            if not myresult:
+                return MessageResponseItem(code=203, message="Account does not exists")
+            else:
+                print(myresult[0])
+
+                sql = "SELECT * FROM appointments WHERE doctor_id = %s "
+
+                user_id= myresult[0]
+
+                val = (user_id,)
+
+                mycursor.execute(sql, val)
+
+                records = mycursor.fetchall()
+
+                db.close()
+                a = 1
+                for record in records:
+                    b = record[12]
+                    c = record[13]
+                    print(c)
+                    result_list = {
+                            "event_id": a,
+                            "title": record[14],
+                            "start_year": b[:4],
+                            "start_month": b[6:7],
+                            "start_date": b[8:10],
+                            "start_time": c[:2],
+                            "admin_id": 2,
+                            "color": "#900000"
+                            }
+                    a = a + 1
+
+                    data.append(result_list)
+
+                print(data)
+
+                return MessageResponsePayloadItem(code=200, message="User logged in successfully", payload={
+                "result": data
+                })
+
+
+        return MessageResponseItem(code=400, message="Account already exists")
+            
+    except Exception as e:
+        traceback.print_exc()
+        raise Exception(f"Exception: (create_patient) -> {e}")
+    finally:
+        if db is not None and db.is_connected():
+            db.close()
+
+
 
 def create_admin(firstName,lastName,emailAddress,password):
     db = None

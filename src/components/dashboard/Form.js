@@ -22,27 +22,72 @@ export default function Form() {
     const [symptoms, setSymptoms] = React.useState('');
     const [passwordConfirm, setPasswordConfirm] = React.useState('');
     const [token, setToken] = React.useState('');
+    const [doctors,setDoctors] = useState([]);
+    const [docID, setdocId] = React.useState('');
 
-    // useEffect(() => {
-    //     setToken(localStorage.getItem('accessToken'))
-    //     console.log('Token is ', token)
-    // },[]);
-
+    useEffect(() => {
+            const getDoctors = async () => {
+              try {
     
-    // if(!token) {
-    //     return <Login />
-    // }
-
-    // const getInitialState = () => {
-    //     const procedure = "Orange";
-    //     return procedure;
-    //   };
+                console.log(localStorage.getItem('accessToken'))         
     
-    //   const [procedure, setProcedure] = useState(getInitialState);
+                const options = {
+                    method: 'GET',
+                    url: '/doctors',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('accessToken')}` 
+                    }
+                };
+    
+    
+                let resp = await axios
+                    .request(options)
+    
+                let resp_data = resp.data
+                console.log(resp_data)
+    
+                if (resp_data.code == 200) {
+                    console.log(resp_data.payload.result)
+                  setDoctors(resp_data.payload.result)
+                  console.log(doctors)
+                } else if (resp_data.code == 400) {
+    
+                    swal({
+                        title: "Oops.., Sorry!!!",
+                        text: "Failed to lget the data !!!",
+                        icon: "error",
+                        button: "Cancel",
+                      });
+                    // return res;
+                }
+    
+                return null
+    
+              } catch (error) {
+    
+                  console.log("Exception")
+                  console.log(error)
+    
+                  return null;
+              }
+            };
+            getDoctors();
+      }, []);
     
       const handleChange = (procedure) => {
         console.log('value:', procedure);
         setProcedure(procedure);
+      };
+
+      const handleDocChange = (docID) => {
+        console.log('value:', docID);
+        setdocId(docID);
+      };
+
+      const handleTimeChange = (appointment_time) => {
+        console.log('value:', appointment_time);
+        setAppointmentTime(appointment_time);
       };
 
     const onCreateBooking = async () => {
@@ -50,12 +95,8 @@ export default function Form() {
         try {
             setToken(localStorage.getItem('accessToken'))
 
-            console.log(applied_before)
-            console.log(procedure)
-            console.log(localStorage.getItem('accessToken'))
-            console.log(token)
-    
             const data = {
+                docIds: docID,
               FirstName: firstName,
               LastName: lastName,
               EmailAddress: emailAddress,
@@ -69,9 +110,8 @@ export default function Form() {
               Appointment_time: appointment_time,
               Symptoms: symptoms
             };
-
-            console.log(data)
             
+            console.log(data)
     
             const options = {
                 method: 'POST',
@@ -88,7 +128,6 @@ export default function Form() {
                 .request(options)
     
             let resp_data = resp.data
-            console.log(resp_data)
     
             if (resp_data.code == 200) {
     
@@ -98,7 +137,7 @@ export default function Form() {
                     icon: "success",
                     button: "Proceed",
                   }).then((value) => {
-                    console.log("We are trying to navigate")
+
                     window.location.href = "/dashboard";
                   })
                
@@ -113,10 +152,7 @@ export default function Form() {
                   });
                 // return res;
             }
-    
-    
-            console.log("null")
-    
+
             return null
     
         } catch (error) {
@@ -128,6 +164,26 @@ export default function Form() {
         }
     
     };
+    
+    const results = [];
+    
+    const doctorsDropDown = () => {
+        // console.log(doctors)
+        // doctors.forEach((doctor, index) => {
+        //     results.push(
+        //         <Option key={index} value={doctor.id} >{doctor.first_name}</Option>,
+        //     );
+        //   });
+       
+        return (<Select label="Please Select Doctor" value={docID} onChange={handleDocChange}>
+        
+                    {doctors.map((doctor) => (
+                        <Option key={doctor.id} value={doctor.id} >{doctor.first_name} {doctor.last_name}</Option>
+                    ))}
+                    
+                </Select>
+        );
+      };
 
     return (
         <>
@@ -255,6 +311,19 @@ export default function Form() {
                                 </div>
 
                     </div>
+                    <div className="sm:grid sm:grid-cols-3 sm:gap-2 sm:items-start  sm:pt-5">
+                        <label htmlFor="LastName" className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
+                            Doctor
+                        </label>
+                            <div className="w-72 mt-1 sm:mt-0 sm:col-span-2">
+                                {/* <Select label="Please Select Doctor" value={procedure} onChange={handleChange}> */}
+                                {/* <Option value="X-Ray/Scan" >X-Ray/Scan</Option> */}
+                                {doctorsDropDown()}
+                                   
+                                {/* </Select> */}
+                                </div>
+
+                    </div>
                     <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start  sm:pt-5">
                         <label htmlFor="aptDate" className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
                             Preferred Appointment Date
@@ -271,12 +340,23 @@ export default function Form() {
                         <label htmlFor="aptTime" className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
                             Preferred Apointment Time
                         </label>
-                        <div className="mt-1 sm:mt-0 sm:col-span-2 h-10">
-                            <input type="time" name="aptTime" id="aptTime"
+                        <div className="w-72 mt-1 sm:mt-0 sm:col-span-2">
+                            {/* <input type="time" name="aptTime" id="aptTime"
                                    onChange={(e) => {
                                     setAppointmentTime(e.target.value);
                                   }}
-                                   className="max-w-lg block w-72 h-128 md:h-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:max-w-xs sm:text-sm border border-solid border-gray-300 rounded-md"/>
+                                   className="max-w-lg block w-72 h-128 md:h-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:max-w-xs sm:text-sm border border-solid border-gray-300 rounded-md"/> */}
+                                   <Select label="Please Select" value={appointment_time} onChange={handleTimeChange}>
+                                    <Option value="09:00" >09:00 AM</Option>
+                                    <Option value="10:00" >10:00 AM</Option>
+                                    <Option value="11:00" >11:00 AM</Option>
+                                    <Option value="12:00" >12:00 PN</Option>
+                                    <Option value="02:00" >02:00 PM</Option>
+                                    <Option value="03:00" >03:00 PN</Option>
+                                    <Option value="04:00" >04:00 PM</Option>
+
+
+                                </Select>
                         </div>
                     </div>
 

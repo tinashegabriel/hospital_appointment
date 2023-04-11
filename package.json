@@ -3,8 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@aldabil/react-scheduler": "^2.6.13",
+    "@emotion/react": "^11.10.6",
+    "@emotion/styled": "^11.10.6",
     "@material-tailwind/react": "^1.2.5",
     "@material-ui/icons": "^4.11.3",
+    "@syncfusion/ej2-material-theme": "^20.4.54",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
