@@ -183,7 +183,7 @@ const Admin = ({props }) => {
 
             <main className="flex flex-col h-full overflow-y-auto">
         {/* {props.children} */}
-          <div className="flex flex-wrap mt-8 mx-8">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 align-items-center">
            
           <Card className="w-96 mx-auto align-items-center w-100 h-100">
                 <CardHeader >  

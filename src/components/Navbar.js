@@ -1,8 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import {Close, MenuOpen} from '@material-ui/icons' 
 
 export default function Navbar (props) {
-  const [navbarOpen, setNavbarOpen] = React.useState(false);
+  const [navbarOpen, setNavbarOpen] = React.useState(false)
+  // const [nav1, setNav] = React.useState(false)
   return (
     <>
       <nav
@@ -10,11 +12,15 @@ export default function Navbar (props) {
           (props.transparent
             ? "top-0 absolute z-50 w-full"
             : "relative shadow-lg bg-white shadow-lg") +
-          " flex flex-wrap items-center justify-between px-2 py-3 "
+          "flex flex-wrap items-center justify-between px-2 py-3 "
         }
       >
-        <div className="container px-4 mx-auto flex flex-wrap items-center justify-between">
-        <div className="w-full relative flex justify-between lg:w-auto lg:static lg:block lg:justify-start font-medium">
+       <div onClick={() => setNavbarOpen (!navbarOpen) } className="md:hidden">
+              {!navbarOpen ? <MenuOpen size = {20}/> : <Close size = {20}/>}
+        </div>
+        <div className={`container px-4 flex flex-wrap items-center justify-between ${navbarOpen ? 'top-20': 'top-[]-490px'}`}>
+          <div className="hidden md:flex">
+        <div className="hidden md:flex w-full relative flex justify-between lg:w-auto lg:static lg:block lg:justify-start font-medium">
             <Link
               className={
                 (props.transparent ? "text-gray-900" : "text-gray-800") +
@@ -106,6 +112,7 @@ export default function Navbar (props) {
               ></i>
             </button>
           </div>
+          </div>
           <div
             className={
               "lg:flex flex-grow items-center bg-white lg:bg-transparent lg:shadow-none" +
@@ -138,14 +145,14 @@ export default function Navbar (props) {
             </ul> */}
             <ul className="flex flex-col lg:flex-row list-none lg:ml-auto">
               <li className="flex items-center">
-                <a
+                <Link
                   className={
                     (props.transparent
                       ? "lg:text-white lg:hover:text-gray-300 text-gray-800"
                       : "text-gray-800 hover:text-gray-600") +
                     " px-3 py-4 lg:py-2 flex items-center text-xs uppercase font-bold"
                   }
-                  href="#pablo"
+                  to="/sign-up"
                 >
                   <i
                     className={
@@ -155,19 +162,19 @@ export default function Navbar (props) {
                       " fab fa-facebook text-lg leading-lg "
                     }
                   />
-                  <span className="lg:hidden inline-block ml-2">Share</span>
-                </a>
+                  <span className="lg:hidden inline-block ml-2">Create Account</span>
+                </Link>
               </li>
 
               <li className="flex items-center">
-                <a
+                <Link
                   className={
                     (props.transparent
                       ? "lg:text-white lg:hover:text-gray-300 text-gray-800"
                       : "text-gray-800 hover:text-gray-600") +
                     " px-3 py-4 lg:py-2 flex items-center text-xs uppercase font-bold"
                   }
-                  href="#pablo"
+                  to="/dlogin"
                 >
                   <i
                     className={
@@ -177,19 +184,19 @@ export default function Navbar (props) {
                       " fab fa-twitter text-lg leading-lg "
                     }
                   />
-                  <span className="lg:hidden inline-block ml-2">Tweet</span>
-                </a>
+                  <span className="lg:hidden inline-block ml-2">Doctor</span>
+                </Link>
               </li>
 
               <li className="flex items-center">
-                <a
+                <Link
                   className={
                     (props.transparent
                       ? "lg:text-white lg:hover:text-gray-300 text-gray-800"
                       : "text-gray-800 hover:text-gray-600") +
                     " px-3 py-4 lg:py-2 flex items-center text-xs uppercase font-bold"
                   }
-                  href="#pablo"
+                  to="/alogin"
                 >
                   <i
                     className={
@@ -199,8 +206,8 @@ export default function Navbar (props) {
                       " fab fa-github text-lg leading-lg "
                     }
                   />
-                  <span className="lg:hidden inline-block ml-2">Star</span>
-                </a>
+                  <span className="lg:hidden inline-block ml-2">Admin</span>
+                </Link>
               </li>
 
               <li className="flex items-center">
@@ -223,6 +230,17 @@ export default function Navbar (props) {
             </ul>
           </div>
         </div>
+        {/* <div onClick={() => setNav (!nav1) } className="md:hidden">
+              {!nav1 ? <Close size = {20}/> : <MenuOpen size = {20}/>}
+            </div>
+            <div className="md:hidden">
+            <ul className= {`fixed left-0 top-0 w-[60%] h-full md:static ${nav1 ? 'top-20': 'top-[]-490px'}`}>
+                  <li className = "p-2 border-b border-gray-600">Create Account</li>
+                  <li className = "p-2 border-b border-gray-600">Doctor</li>
+                  <li className = "p-2 border-b border-gray-600">Admin</li>
+                  <li className = "p-2 border-b border-gray-600">About Us</li>
+            </ul>
+            </div> */}
       </nav>
     </>
   );
