@@ -1,24 +1,107 @@
-import react from 'react';
-import {useState} from 'react';
+import React,{useState,useEffect } from 'react';
 import { Link } from "react-router-dom";
 import DocSidebar from './DocSidebar';
 import Topbar from "./Topbar";
+import axios from 'axios';
+import swal from 'sweetalert';
+import Sidebar from './Sidebar';
 
 
 
     const DoctorAvailable = ({props }) => {
         const [isOpenSidebar, setIsOpenSidebar] = useState(false)
+        const [doctors,setDoctors] = useState([]);
     
         const toggleSidebar = () => {
           setIsOpenSidebar(!isOpenSidebar)
         }
+
+        useEffect(() => {
+            const getDoctors = async () => {
+              try {
+    
+                console.log(localStorage.getItem('accessToken'))         
+    
+                const options = {
+                    method: 'GET',
+                    url: '/doctors',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('accessToken')}` 
+                    }
+                };
+    
+    
+                let resp = await axios
+                    .request(options)
+    
+                let resp_data = resp.data
+                console.log(resp_data)
+    
+                if (resp_data.code == 200) {
+                    console.log(resp_data.payload.result)
+                  setDoctors(resp_data.payload.result)
+                  console.log(doctors)
+                } else if (resp_data.code == 400) {
+    
+                    swal({
+                        title: "Oops.., Sorry!!!",
+                        text: "Failed to lget the data !!!",
+                        icon: "error",
+                        button: "Cancel",
+                      });
+                    // return res;
+                }
+    
+                return null
+    
+              } catch (error) {
+    
+                  console.log("Exception")
+                  console.log(error)
+    
+                  return null;
+              }
+            };
+            getDoctors();
+      }, []);
     
         let [toggleForm, setToggleForm] = useState(false);
+
+        const docsList = () => {
+
+            console.log(doctors)
+             return (<tbody className="divide-y divide-gray-200">
+             
+                     {doctors.map((doctor) => (
+                         <tr>
+ 
+                            <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
+                                {doctor.first_name}
+                            </td>
+                            <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
+                                {doctor.last_name}
+                            </td>
+                            <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
+                                {doctor.phone_number}
+                            </td>
+                            <td className="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
+                                <Link class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"  to="/">
+                                    View
+                                </Link>
+                            </td>
+                        </tr>
+                         ))}
+     
+                     </tbody>
+             
+             );
+           };
         
         return (
             <>
                 <div className="flex h-screen bg-gray-200">
-                <DocSidebar isOpen={isOpenSidebar} />
+                <Sidebar />
     
           <div className="flex flex-col flex-1 w-full">
             <Topbar isOpenSidebar={isOpenSidebar} toggleSidebar={toggleSidebar} />
@@ -75,45 +158,11 @@ import Topbar from "./Topbar";
                                             scope="col"
                                             className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase "
                                         >
-                                            Email
+                                            Phone Number
                                         </th>
                                     </tr>
                                 </thead>
-                                <tbody className="divide-y divide-gray-200">
-                                    <tr>
-                                        <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
-                                            Ruvimbo
-                                        </td>
-                                        <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
-                                            Bumhudza
-                                        </td>
-                                        <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
-                                            ruvimbobumhudza@gmail.com
-                                        </td>
-                                        <td className="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
-                                        <Link class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"  to="/">
-                                                View
-                                                </Link>
-                                        </td>
-                                        
-                                    </tr>
-                                    <tr>
-                                        <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
-                                            Leo
-                                        </td>
-                                        <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
-                                            Gabriel
-                                        </td>
-                                        <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
-                                            leogabriel@gmail.com
-                                        </td>
-                                        <td className="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
-                                        <Link class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"  to="/">
-                                                View
-                                                </Link>
-                                        </td>
-                                    </tr>
-                                </tbody>
+                                {docsList()}
                             </table>
                         </div>
                     </div>

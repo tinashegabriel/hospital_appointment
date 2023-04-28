@@ -21,7 +21,7 @@ const Sidebar = ({ isOpen }) => {
                 className={`absolute inset-y-0 left-0 w-1 bg-${colorsClass.primary} rounded-tr-lg rounded-br-lg`}
               />
               <Link
-                to="/"
+                to="/dashboard"
                 className="inline-flex items-center w-full text-sm font-semibold"
               >
                 <HomeRounded />
@@ -88,7 +88,7 @@ const Sidebar = ({ isOpen }) => {
                 className={`absolute inset-y-0 left-0 w-1 bg-${colorsClass.primary} rounded-tr-lg rounded-br-lg`}
               />
               <Link
-                to="/"
+                to="/docavailable"
                 className="inline-flex items-center w-full text-sm font-semibold"
               >
                 <Person />
