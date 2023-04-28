@@ -1,94 +1,102 @@
 import React,{useState,useEffect } from 'react';
-import { Link } from "react-router-dom";
-import Topbar from "./Topbar";
+import AdminSidebar from '../adminSidebar';
+import Topbar from "../Topbar";
 import axios from 'axios';
 import swal from 'sweetalert';
-import Sidebar from './Sidebar';
 
 
-
-    const DoctorAvailable = ({props }) => {
+    const Appointment = ({props }) => {
         const [isOpenSidebar, setIsOpenSidebar] = useState(false)
-        const [doctors,setDoctors] = useState([]);
+        const [appointments, setAppointments] = React.useState('');
+        const [patients, setPatients] = React.useState([]);
     
         const toggleSidebar = () => {
           setIsOpenSidebar(!isOpenSidebar)
         }
 
         useEffect(() => {
-            const getDoctors = async () => {
-              try {
-    
-                console.log(localStorage.getItem('accessToken'))         
-    
-                const options = {
-                    method: 'GET',
-                    url: '/doctors',
-                    headers: { 
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${localStorage.getItem('accessToken')}` 
+            const getUser = async () => {
+                  try {
+        
+                    console.log(localStorage.getItem('accessToken'))         
+        
+                    const options = {
+                        method: 'GET',
+                        url: '/doctor/appointments',
+                        headers: { 
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${localStorage.getItem('accessToken')}` 
+                        }
+                    };
+        
+        
+                    let resp = await axios
+                        .request(options)
+        
+                    let resp_data = resp.data
+                    console.log(resp_data)
+        
+                    if (resp_data.code == 200) {
+        
+                      setAppointments(resp_data.payload.result.length)
+                      setPatients(resp_data.payload.result)
+                        // return res;
+                    } else if (resp_data.code == 400) {
+        
+                        swal({
+                            title: "Oops.., Sorry!!!",
+                            text: "Failed to lget the data !!!",
+                            icon: "error",
+                            button: "Cancel",
+                          });
+                        // return res;
                     }
+        
+        
+                    console.log("null")
+        
+                    return null
+        
+                  } catch (error) {
+        
+                      console.log("Exception")
+                      console.log(error)
+        
+                      return null;
+                  }
                 };
+                getUser();
     
-    
-                let resp = await axios
-                    .request(options)
-    
-                let resp_data = resp.data
-                console.log(resp_data)
-    
-                if (resp_data.code == 200) {
-                    console.log(resp_data.payload.result)
-                  setDoctors(resp_data.payload.result)
-                  console.log(doctors)
-                } else if (resp_data.code == 400) {
-    
-                    swal({
-                        title: "Oops.., Sorry!!!",
-                        text: "Failed to lget the data !!!",
-                        icon: "error",
-                        button: "Cancel",
-                      });
-                    // return res;
-                }
-    
-                return null
-    
-              } catch (error) {
-    
-                  console.log("Exception")
-                  console.log(error)
-    
-                  return null;
-              }
-            };
-            getDoctors();
-      }, []);
+          }, []);
     
         let [toggleForm, setToggleForm] = useState(false);
 
-        const docsList = () => {
+        const patientList = () => {
 
-            console.log(doctors)
+            console.log(patients)
              return (<tbody className="divide-y divide-gray-200">
              
-                     {doctors.map((doctor) => (
+                     {patients.map((patient) => (
                          <tr>
- 
-                            <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
-                                {doctor.first_name}
+     
+                            <td className="px-6 py-4 text-sm font-medium text-gray-800 whitespace-nowrap">
+                                {patient.id}
                             </td>
                             <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
-                                {doctor.last_name}
+                                {patient.first_name}
                             </td>
                             <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
-                                {doctor.phone_number}
+                                {patient.last_name}
+                            </td>
+                            <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
+                                {patient.email_address}
                             </td>
                             <td className="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
-                                <Link class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"  to="/view">
-                                    View
-                                </Link>
+                                    {patient.appointment_date}
                             </td>
+                            {/* <td className="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
+                                   {patient.symptoms}
+                            </td> */}
                         </tr>
                          ))}
      
@@ -100,7 +108,7 @@ import Sidebar from './Sidebar';
         return (
             <>
                 <div className="flex h-screen bg-gray-200">
-                <Sidebar />
+                <AdminSidebar isOpen={isOpenSidebar} />
     
           <div className="flex flex-col flex-1 w-full">
             <Topbar isOpenSidebar={isOpenSidebar} toggleSidebar={toggleSidebar} />
@@ -119,7 +127,7 @@ import Sidebar from './Sidebar';
                                 name="hs-table-search"
                                 id="hs-table-search"
                                 className="block w-full p-3 pl-10 text-sm border-gray-200 rounded-md focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400"
-                                placeholder="Search Doctor..."
+                                placeholder="Search Appointment..."
                             />
                             <div className="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
                                 <svg
@@ -141,6 +149,27 @@ import Sidebar from './Sidebar';
                             <table className="min-w-full divide-y divide-gray-200">
                                 <thead className="bg-gray-50">
                                     <tr>
+                                        {/* <th scope="col" className="py-3 pl-4">
+                                            <div className="flex items-center h-5">
+                                                <input
+                                                    id="checkbox-all"
+                                                    type="checkbox"
+                                                    className="text-blue-600 border-gray-200 rounded focus:ring-blue-500"
+                                                />
+                                                <label
+                                                    htmlFor="checkbox"
+                                                    className="sr-only"
+                                                >
+                                                    Checkbox
+                                                </label>
+                                            </div>
+                                        </th> */}
+                                        <th
+                                            scope="col"
+                                            className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase "
+                                        >
+                                            Appointment ID
+                                        </th>
                                         <th
                                             scope="col"
                                             className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase "
@@ -157,31 +186,30 @@ import Sidebar from './Sidebar';
                                             scope="col"
                                             className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase "
                                         >
-                                            Phone Number
+                                            Email
                                         </th>
                                         <th
                                             scope="col"
-                                            className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase "
+                                            className="px-6 py-3 text-xs font-bold text-right text-gray-500 uppercase "
                                         >
-                                            Type
+                                            Date
                                         </th>
                                         <th
                                             scope="col"
-                                            className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase "
+                                            className="px-6 py-3 text-xs font-bold text-right text-gray-500 uppercase "
                                         >
-                                           {/* <Link class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"  to="/view">
-                                    View
-                                </Link> */}
+                                            Doctor
                                         </th>
                                     </tr>
                                 </thead>
-                                {docsList()}
+                                {patientList()}
                             </table>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+                {/* <Form /> */}
             </div>
         </main>
       </div>
@@ -190,4 +218,4 @@ import Sidebar from './Sidebar';
     )
 }
 
-export default DoctorAvailable;
+export default Appointment;

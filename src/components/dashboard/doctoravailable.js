@@ -1,13 +1,14 @@
 import React,{useState,useEffect } from 'react';
 import { Link } from "react-router-dom";
+import DocSidebar from './DocSidebar';
 import Topbar from "./Topbar";
 import axios from 'axios';
 import swal from 'sweetalert';
-import Sidebar from './Sidebar';
 
 
 
-    const DoctorAvailable = ({props }) => {
+
+    const DocAvailable = ({props }) => {
         const [isOpenSidebar, setIsOpenSidebar] = useState(false)
         const [doctors,setDoctors] = useState([]);
     
@@ -84,6 +85,9 @@ import Sidebar from './Sidebar';
                             <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
                                 {doctor.phone_number}
                             </td>
+                            <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
+                                {doctor.type}
+                            </td>
                             <td className="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
                                 <Link class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"  to="/view">
                                     View
@@ -100,7 +104,7 @@ import Sidebar from './Sidebar';
         return (
             <>
                 <div className="flex h-screen bg-gray-200">
-                <Sidebar />
+                <DocSidebar />
     
           <div className="flex flex-col flex-1 w-full">
             <Topbar isOpenSidebar={isOpenSidebar} toggleSidebar={toggleSidebar} />
@@ -190,4 +194,4 @@ import Sidebar from './Sidebar';
     )
 }
 
-export default DoctorAvailable;
+export default DocAvailable;

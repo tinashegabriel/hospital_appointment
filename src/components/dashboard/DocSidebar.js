@@ -53,7 +53,7 @@ const DocSidebar = ({ isOpen }) => {
                 <span className="ml-4">Calendar</span>
               </Link>
             </li>
-            <li
+            {/* <li
               className={`relative px-6 py-3 hover:bg-${colorsClass.primary} hover:text-gray-600 transition-colors duration-500`}
             >
               <span
@@ -66,7 +66,7 @@ const DocSidebar = ({ isOpen }) => {
                 <Chat />
                 <span className="ml-4">Messages</span>
               </Link>
-            </li>
+            </li> */}
             <li
               className={`relative px-6 py-3 hover:bg-${colorsClass.primary} hover:text-gray-600 transition-colors duration-500`}
             >
@@ -88,7 +88,7 @@ const DocSidebar = ({ isOpen }) => {
                 className={`absolute inset-y-0 left-0 w-1 bg-${colorsClass.primary} rounded-tr-lg rounded-br-lg`}
               />
               <Link
-                to="/docavailable"
+                to="/davailable"
                 className="inline-flex items-center w-full text-sm font-semibold"
               >
                 <Person />

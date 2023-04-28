@@ -10,7 +10,10 @@ import AboutUs from './components/aboutus';
 import Calendar from './components/dashboard/Calendar';
 import Doctor from './components/dashboard/doctor';
 import Chatbot from './components/chatbot/chatbot';
-import DoctorAvailable from './components/dashboard/DocsAvailable';
+import DoctorAvailable from './components/dashboard/doctoravailable';
+import DocAvailable from './components/dashboard/DocsAvailable';
+import DoctorAvailableadmin from './components/dashboard/adminsidebar/docAvailable';
+import PatientList from './components/dashboard/adminsidebar/patientlist';
 import Alogin from './components/login/Alogin';
 import ScheduleApp from './components/dashboard/schedulepage';
 import Dlogin from './components/login/Dlogin';
@@ -22,9 +25,17 @@ import {
   Route,
 } from "react-router-dom";
 import Appointments from './components/dashboard/Appointments';
+import DoctorProfile from './components/dashboard/Viewdoc';
+import AddAppointments from './components/dashboard/adminsidebar/addappointment';
+import AddPatient from './components/dashboard/adminsidebar/addpatient';
+import AddDoctor from './components/dashboard/adminsidebar/adddoctor';
+import Appointment from './components/dashboard/adminsidebar/appointments';
 import DoctorAppointment from './components/dashboard/doctorappointment';
 import PatientMedicalForm from './components/dashboard/Patientmedicalform';
 import DocSchedule from './components/schedules/docSchedule';
+import UserSchedule from './components/schedules/userSchedule';
+
+
 
 const router = createBrowserRouter([
   {
@@ -44,6 +55,14 @@ const router = createBrowserRouter([
   element: <Appointments/>
   },
   {
+    path: "view",
+    element: <DoctorProfile/>
+    },
+  {
+    path: "addappointments",
+    element: <AddAppointments/>
+    },
+  {
     path: "admin",
     element: <Admin/>
     }
@@ -53,6 +72,10 @@ const router = createBrowserRouter([
     element: <Form/>
     },
     {
+      path: "appointment",
+      element: <Appointment/>
+      },
+    {
       path: "aboutus",
       element: <AboutUs/>
     },
@@ -60,10 +83,18 @@ const router = createBrowserRouter([
       path: "calendar",
       element: <Calendar/>
     },
-    // {
-    //   path: "messages",
-    //   element: <Messages/>
-    // },
+    {
+      path: "patientlist",
+      element: <PatientList/>
+    },
+    {
+      path: "addpatient",
+      element: <AddPatient/>
+    },
+    {
+      path: "adddoctor",
+      element: <AddDoctor/>
+    },
     {
       path: "doctor",
       element: <Doctor/>
@@ -79,6 +110,14 @@ const router = createBrowserRouter([
     {
       path: "docavailable",
       element: <DoctorAvailable/>
+    },
+    {
+      path: "davailable",
+      element: <DocAvailable/>
+    },
+    {
+      path: "doctoravailable",
+      element: <DoctorAvailableadmin/>
     },
     {
       path: "patientmedicalform",
@@ -99,6 +138,10 @@ const router = createBrowserRouter([
     {
       path: "docschedule",
       element: <DocSchedule/>
+    },
+    {
+      path: "userSchedule",
+      element: <UserSchedule/>
     },
 
 ])

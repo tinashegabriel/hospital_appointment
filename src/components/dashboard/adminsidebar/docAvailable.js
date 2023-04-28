@@ -1,13 +1,13 @@
 import React,{useState,useEffect } from 'react';
 import { Link } from "react-router-dom";
-import Topbar from "./Topbar";
+import Topbar from '../Topbar'
 import axios from 'axios';
 import swal from 'sweetalert';
-import Sidebar from './Sidebar';
+import AdminSidebar from '../adminSidebar';
 
 
 
-    const DoctorAvailable = ({props }) => {
+    const DoctorAvailableadmin = ({props }) => {
         const [isOpenSidebar, setIsOpenSidebar] = useState(false)
         const [doctors,setDoctors] = useState([]);
     
@@ -84,6 +84,9 @@ import Sidebar from './Sidebar';
                             <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
                                 {doctor.phone_number}
                             </td>
+                            <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
+                                {doctor.type}
+                            </td>
                             <td className="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
                                 <Link class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"  to="/view">
                                     View
@@ -100,7 +103,7 @@ import Sidebar from './Sidebar';
         return (
             <>
                 <div className="flex h-screen bg-gray-200">
-                <Sidebar />
+                <AdminSidebar />
     
           <div className="flex flex-col flex-1 w-full">
             <Topbar isOpenSidebar={isOpenSidebar} toggleSidebar={toggleSidebar} />
@@ -160,19 +163,19 @@ import Sidebar from './Sidebar';
                                             Phone Number
                                         </th>
                                         <th
-                                            scope="col"
-                                            className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase "
-                                        >
-                                            Type
-                                        </th>
-                                        <th
-                                            scope="col"
-                                            className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase "
-                                        >
-                                           {/* <Link class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"  to="/view">
-                                    View
-                                </Link> */}
-                                        </th>
+                                        scope="col"
+                                        className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase "
+                                    >
+                                        Type
+                                    </th>
+                                    <th
+                                    scope="col"
+                                    className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase "
+                                >
+                            //     <Link class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"  to="/view">
+                            //     View
+                            // </Link>
+                                </th>
                                     </tr>
                                 </thead>
                                 {docsList()}
@@ -190,4 +193,4 @@ import Sidebar from './Sidebar';
     )
 }
 
-export default DoctorAvailable;
+export default DoctorAvailableadmin;

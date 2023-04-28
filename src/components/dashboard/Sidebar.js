@@ -28,7 +28,7 @@ const Sidebar = ({ isOpen }) => {
                 <span className="ml-4">Dashboard</span>
               </Link>
             </li>
-            <li
+            {/* <li
               className={`relative px-6 py-3 hover:bg-${colorsClass.primary} hover:text-gray-600 transition-colors duration-500`}
             >
               <Link
@@ -38,7 +38,7 @@ const Sidebar = ({ isOpen }) => {
                 <AssignmentOutlined />
                 <span className="ml-4">Forms</span>
               </Link>
-            </li>
+            </li> */}
             <li
               className={`relative px-6 py-3 hover:bg-${colorsClass.primary} hover:text-gray-600 transition-colors duration-500`}
             >
@@ -46,14 +46,14 @@ const Sidebar = ({ isOpen }) => {
                 className={`absolute inset-y-0 left-0 w-1 bg-${colorsClass.primary} rounded-tr-lg rounded-br-lg`}
               />
               <Link
-                to="/calendar"
+                to="/userSchedule"
                 className="inline-flex items-center w-full text-sm font-semibold"
               >
                 <Event />
                 <span className="ml-4">Calendar</span>
               </Link>
             </li>
-            <li
+            {/* <li
               className={`relative px-6 py-3 hover:bg-${colorsClass.primary} hover:text-gray-600 transition-colors duration-500`}
             >
               <span
@@ -66,7 +66,7 @@ const Sidebar = ({ isOpen }) => {
                 <Chat />
                 <span className="ml-4">Messages</span>
               </Link>
-            </li>
+            </li> */}
             <li
               className={`relative px-6 py-3 hover:bg-${colorsClass.primary} hover:text-gray-600 transition-colors duration-500`}
             >
@@ -88,7 +88,7 @@ const Sidebar = ({ isOpen }) => {
                 className={`absolute inset-y-0 left-0 w-1 bg-${colorsClass.primary} rounded-tr-lg rounded-br-lg`}
               />
               <Link
-                to="/docavailable"
+                to="/davailable"
                 className="inline-flex items-center w-full text-sm font-semibold"
               >
                 <Person />
