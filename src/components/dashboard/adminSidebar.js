@@ -21,7 +21,7 @@ const AdminSidebar = ({props }) => {
           <div className="flex h-screen bg-gray-200">
           <aside className="z-20 hidden md:block w-64 bg-white overflow-y-auto flex-shrink-0">
       <div className="py-4 text-gray-500">
-        <Link to="/" className="ml-6 text-lg font-bold text-gray-800">
+        <Link to="/admin" className="ml-6 text-lg font-bold text-gray-800">
           Home
         </Link>
         <ul className="mt-6 text-gray-800">
@@ -32,7 +32,7 @@ const AdminSidebar = ({props }) => {
               className={`absolute inset-y-0 left-0 w-1 bg-${colorsClass.primary} rounded-tr-lg rounded-br-lg`}
             />
             <Link
-              to="/"
+              to="/admin"
               className="inline-flex items-center w-full text-sm font-semibold"
             >
               <HomeRounded />

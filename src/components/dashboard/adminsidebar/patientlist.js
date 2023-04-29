@@ -1,20 +1,111 @@
 import {Event} from "@material-ui/icons";
-import {useState} from 'react';
+import React,{useState,useEffect } from 'react';
 import { Select, Option, Radio } from "@material-tailwind/react"
 import AdminSidebar from "../adminSidebar";
 import Topbar from "../Topbar";
+import axios from 'axios';
+import swal from 'sweetalert';
 
 
 
 const PatientList = () => {
     const [isOpenSidebar, setIsOpenSidebar] = useState(false)
+    const [appointments, setAppointments] = React.useState('');
+    const [patients, setPatients] = React.useState([]);
 
     const toggleSidebar = () => {
       setIsOpenSidebar(!isOpenSidebar)
     }
+
+    useEffect(() => {
+        const getUser = async () => {
+              try {
+    
+                console.log(localStorage.getItem('accessToken'))         
+    
+                const options = {
+                    method: 'GET',
+                    url: '/admin/patients',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('accessToken')}` 
+                    }
+                };
+    
+    
+                let resp = await axios
+                    .request(options)
+    
+                let resp_data = resp.data
+                console.log(resp_data)
+    
+                if (resp_data.code == 200) {
+    
+                  setAppointments(resp_data.payload.result.length)
+                  setPatients(resp_data.payload.result)
+                    // return res;
+                } else if (resp_data.code == 400) {
+    
+                    swal({
+                        title: "Oops.., Sorry!!!",
+                        text: "Failed to lget the data !!!",
+                        icon: "error",
+                        button: "Cancel",
+                      });
+                    // return res;
+                }
+    
+    
+                console.log("null")
+    
+                return null
+    
+              } catch (error) {
+    
+                  console.log("Exception")
+                  console.log(error)
+    
+                  return null;
+              }
+            };
+            getUser();
+
+      }, []);
    
     const [selected,setSelected] = useState("");
     const[open, setOpen] = useState("false");
+
+    const patientList = () => {
+
+        console.log(patients)
+         return (<tbody className="divide-y divide-gray-200">
+         
+                 {patients.map((patient) => (
+                     <tr>
+ 
+                        <td className="px-6 py-4 text-sm font-medium text-gray-800 whitespace-nowrap">
+                            {patient.id}
+                        </td>
+                        <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
+                            {patient.first_name}
+                        </td>
+                        <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
+                            {patient.last_name}
+                        </td>
+                        <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
+                            {patient.address}
+                        </td>
+                        <td className="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
+                                Male
+                        </td>
+
+                    </tr>
+                     ))}
+ 
+                 </tbody>
+         
+         );
+       };
 
     return (
         <>
@@ -97,7 +188,7 @@ const PatientList = () => {
                                         
                                     </tr>
                                 </thead>
-                                
+                                {patientList()}
                                 
                             </table>
                      </div>

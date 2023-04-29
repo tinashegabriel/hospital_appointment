@@ -370,6 +370,80 @@ def get_user_appointments(emailAddress):
         if db is not None and db.is_connected():
             db.close()
 
+def get_admin_appointments(emailAddress):
+    db = None
+    try:
+        db = connect()
+
+        print(db)
+
+        if db != None:
+            mycursor = db.cursor()
+            print("1")
+
+            sql = "SELECT * FROM ad_credentials WHERE email_address = %s "
+
+            val = (emailAddress,)
+
+            mycursor.execute(sql, val)
+
+            myresult = mycursor.fetchone()
+
+            
+
+            data = []
+            if not myresult:
+                return MessageResponseItem(code=203, message="Account does not exists")
+            else:
+                print(myresult[0])
+
+                sql = "SELECT * FROM appointments"
+
+                user_id= myresult[0]
+
+                val = (user_id,)
+
+                mycursor.execute(sql)
+
+                records = mycursor.fetchall()
+
+                db.close()
+
+                for record in records:
+                    
+                    result_list = {
+                            "first_name": record[3],
+                            "last_name": record[4],
+                            "date_of_birth": record[5],
+                            "email_address": record[6],
+                            "phone_number": record[7],
+                            "address": record[8],
+                            "city": record[9],
+                            "applied_before": record[10],
+                            "procedure": record[11],
+                            "appointment_date": record[12],
+                            "appointment_time": record[13],
+                            "symptoms": record[14]
+                            }
+
+                    data.append(result_list)
+
+                print(data)
+
+                return MessageResponsePayloadItem(code=200, message="User logged in successfully", payload={
+                "result": data
+                })
+
+
+        return MessageResponseItem(code=400, message="Account already exists")
+            
+    except Exception as e:
+        traceback.print_exc()
+        raise Exception(f"Exception: (create_patient) -> {e}")
+    finally:
+        if db is not None and db.is_connected():
+            db.close()
+
 def get_user_doctors(emailAddress):
     db = None
     try:
@@ -398,6 +472,144 @@ def get_user_doctors(emailAddress):
                 print(myresult[0])
 
                 sql = "SELECT * FROM doctors"
+
+                user_id= myresult[0]
+
+                val = (user_id,)
+
+                mycursor.execute(sql)
+
+                records = mycursor.fetchall()
+
+                db.close()
+
+                for record in records:
+                    
+                    result_list = {
+                            "id": record[0],
+                            "first_name": record[1],
+                            "last_name": record[2],
+                            "gender": record[3],
+                            "phone_number": record[4],
+                            "address": record[5],
+
+                            }
+
+                    data.append(result_list)
+
+                print(data)
+
+                return MessageResponsePayloadItem(code=200, message="User logged in successfully", payload={
+                "result": data
+                })
+
+
+        return MessageResponseItem(code=400, message="Account already exists")
+            
+    except Exception as e:
+        traceback.print_exc()
+        raise Exception(f"Exception: (create_patient) -> {e}")
+    finally:
+        if db is not None and db.is_connected():
+            db.close()
+
+def get_admin_doctors(emailAddress):
+    db = None
+    try:
+        db = connect()
+
+        print(db)
+
+        if db != None:
+            mycursor = db.cursor()
+            print("1")
+
+            sql = "SELECT * FROM ad_credentials WHERE email_address = %s "
+
+            val = (emailAddress,)
+
+            mycursor.execute(sql, val)
+
+            myresult = mycursor.fetchone()
+
+            
+
+            data = []
+            if not myresult:
+                return MessageResponseItem(code=203, message="Account does not exists")
+            else:
+                print(myresult[0])
+
+                sql = "SELECT * FROM doctors"
+
+                user_id= myresult[0]
+
+                val = (user_id,)
+
+                mycursor.execute(sql)
+
+                records = mycursor.fetchall()
+
+                db.close()
+
+                for record in records:
+                    
+                    result_list = {
+                            "id": record[0],
+                            "first_name": record[1],
+                            "last_name": record[2],
+                            "gender": record[3],
+                            "phone_number": record[4],
+                            "address": record[5],
+
+                            }
+
+                    data.append(result_list)
+
+                print(data)
+
+                return MessageResponsePayloadItem(code=200, message="User logged in successfully", payload={
+                "result": data
+                })
+
+
+        return MessageResponseItem(code=400, message="Account already exists")
+            
+    except Exception as e:
+        traceback.print_exc()
+        raise Exception(f"Exception: (create_patient) -> {e}")
+    finally:
+        if db is not None and db.is_connected():
+            db.close()
+
+def get_admin_patients(emailAddress):
+    db = None
+    try:
+        db = connect()
+
+        print(db)
+
+        if db != None:
+            mycursor = db.cursor()
+            print("1")
+
+            sql = "SELECT * FROM ad_credentials WHERE email_address = %s "
+
+            val = (emailAddress,)
+
+            mycursor.execute(sql, val)
+
+            myresult = mycursor.fetchone()
+
+            
+
+            data = []
+            if not myresult:
+                return MessageResponseItem(code=203, message="Account does not exists")
+            else:
+                print(myresult[0])
+
+                sql = "SELECT * FROM patients"
 
                 user_id= myresult[0]
 
