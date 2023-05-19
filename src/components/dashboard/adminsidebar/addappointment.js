@@ -3,7 +3,7 @@ import {useState} from 'react';
 import { Select, Option, Radio } from "@material-tailwind/react"
 import AdminSidebar from "../adminSidebar";
 import Topbar from "../Topbar";
-import Form from "../Form";
+import Formadmin from "./Formadmin";
 
 
 const AddAppointments = ({onSendAppointment, lastId }) => {
@@ -55,7 +55,7 @@ const AddAppointments = ({onSendAppointment, lastId }) => {
 
             <div className="flex flex-wrap mt-8 mx-8">
            
-                <Form />
+                <Formadmin />
             </div>
         </main>
       </div>

@@ -84,9 +84,6 @@ import AdminSidebar from '../adminSidebar';
                             <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
                                 {doctor.phone_number}
                             </td>
-                            <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
-                                {doctor.type}
-                            </td>
                             <td className="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
                                 <Link class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"  to="/view">
                                     View
@@ -163,19 +160,19 @@ import AdminSidebar from '../adminSidebar';
                                             Phone Number
                                         </th>
                                         <th
-                                        scope="col"
-                                        className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase "
-                                    >
-                                        Type
-                                    </th>
-                                    <th
-                                    scope="col"
-                                    className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase "
-                                >
-                            //     <Link class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"  to="/view">
-                            //     View
-                            // </Link>
-                                </th>
+                                            scope="col"
+                                            className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase "
+                                        >
+                                            Type
+                                        </th>
+                                        <th
+                                            scope="col"
+                                            className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase "
+                                        >
+                                           {/* <Link class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"  to="/view">
+                                    View
+                                </Link> */}
+                                        </th>
                                     </tr>
                                 </thead>
                                 {docsList()}

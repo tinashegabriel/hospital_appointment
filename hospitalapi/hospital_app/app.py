@@ -429,6 +429,7 @@ async def admin_register(patientDto: PatientDto = Body(...)):
     except Exception as e:
         raise HTTPException(500, detail=f"{e}")
 
+
 @app.post("/admin/login", tags=["admin"])
 async def admin_login(loginDto: LoginDto = Body(...)):
     try:
@@ -498,6 +499,34 @@ async def appointments(jwt_token = Depends(http_scheme)):
     
         raise HTTPException(status_code=500, detail=f"{e}")
 
+@app.post("admin/appointment", tags=["admin"])
+async def book_appointment(appointmentDto: AppointmentDto=Body(...), jwt_token = Depends(http_scheme)):
+    try:
+        jwt_token = jwt.decode(jwt_token.credentials, SECRET, algorithms=["HS256"])
+        email = jwt_token['emailAddress']
+
+        result = create_booking_admin(email,appointmentDto.docIds,
+                                    appointmentDto.FirstName, 
+                                    appointmentDto.LastName, 
+                                    appointmentDto.EmailAddress,
+                                    appointmentDto.Phonenumber,
+                                    appointmentDto.D_O_B, 
+                                    appointmentDto.Address, 
+                                    appointmentDto.City, 
+                                    appointmentDto.Applied_before,
+                                    appointmentDto.Procedure, 
+                                    appointmentDto.Appointment_date,
+                                    appointmentDto.Appointment_time,
+                                    appointmentDto.Symptoms)
+
+        return MessageResponseItem(message = result.message, code = result.code)
+
+    except jwt.exceptions.InvalidSignatureError:
+        raise HTTPException(status_code=403, detail="Not Valid")
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"{e}")
+
 @app.get("/admin/doctors", tags=["admin"])
 async def doctors(jwt_token = Depends(http_scheme)):
     try:
@@ -543,7 +572,6 @@ async def patients(jwt_token = Depends(http_scheme)):
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"{e}")
-
 
 @app.post("/doctor/login", tags=["admin"])
 async def _login(loginDto: LoginDto = Body(...)):

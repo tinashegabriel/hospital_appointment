@@ -1,47 +1,94 @@
 import {Event} from "@material-ui/icons";
-import {useState} from 'react';
+import {useState, React} from 'react';
 import { Select, Option, Radio } from "@material-tailwind/react"
 import AdminSidebar from "../adminSidebar";
 import Topbar from "../Topbar";
+import axios from 'axios';
+import swal from 'sweetalert';
 
 
 
-const AddPatient = ({onSendAppointment, lastId }) => {
-    const [isOpenSidebar, setIsOpenSidebar] = useState(false)
+export default function AddPatient (){
+    const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [emailAddress, setEmailAddress] =useState('');
+  const [password, setPassword] = useState('');
+  const [passwordConfirm, setPasswordConfirm] = useState('');
+  const [token, setToken] = useState('');
 
-    const toggleSidebar = () => {
-      setIsOpenSidebar(!isOpenSidebar)
+  const onCreateAccount = async () => {
+
+    try {
+
+        const data = {
+            FirstName: firstName,
+            LastName: lastName,
+            EmailAddress: emailAddress,
+            Password: password
+        };
+        
+
+        const options = {
+            method: 'POST',
+            url: '/auth/register',
+            headers: { 'Content-Type': 'application/json' },
+            data
+        };
+
+
+        let resp = await axios
+            .request(options)
+
+        let resp_data = resp.data
+        console.log(resp_data)
+
+        if (resp_data.code == 200) {
+
+            swal({
+                title: "Thank you!",
+                text: "Account created",
+                icon: "success",
+                button: "Proceed",
+              }).then((value) => {
+                console.log("We are trying to navigate")
+                window.location.href = "/";
+              })
+           
+            // return res;
+        } else if (resp_data.code == 400) {
+
+            swal({
+                title: "Oops.., Sorry!!!",
+                text: "Failed to loging, wrong username or password",
+                icon: "error",
+                button: "Retry",
+              });
+            // return res;
+        }
+
+
+        console.log("null")
+
+        return null
+
+    } catch (error) {
+
+        console.log("Exception")
+        console.log(error)
+
+        return null;
     }
+    
 
-    // const clearData = {
-    //     FirstName: '',
-    //     LastName: '',
-    //     aptDate: '',
-    //     aptTime: '',
-    //     aptNotes: '',
-    //     address: '',
-    //     city: '',
-    // };
-    // let [toggleForm, setToggleForm] = useState(false);
-    // let [formData, setFormData] = useState(clearData)
+};
 
-    // function formDataPublish() {
-    //     const appointmentInfo = {
-    //         id: lastId + 1,
-    //         FirstName: formData.FirstName,
-    //         LastName: formData.LastName,
-    //         dob: formData.dob,
-    //         aptDate: formData.aptDate + ' ' + formData.aptTime,
-    //         aptNotes: formData.aptNotes,
-    //         address: formData.address,
-    //         city: formData.city
-    //     }
-    //     onSendAppointment(appointmentInfo);
-    //     setFormData(clearData);
-    //     setToggleForm(!toggleForm);
-    // }
-    // const [selected,setSelected] = useState("");
-    // const[open, setOpen] = useState("false");
+    
+const [isOpenSidebar, setIsOpenSidebar] = useState(false)
+
+const toggleSidebar = () => {
+  setIsOpenSidebar(!isOpenSidebar)
+}
+
 
     return (
         <>
@@ -63,9 +110,9 @@ const AddPatient = ({onSendAppointment, lastId }) => {
                             <input type="text" name="FirstName" id="FirstName"
                                    
                                    className="max-w-lg block w-72 h-128 md:h-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:max-w-xs sm:text-sm border border-solid border-gray-300 rounded-md"
-                                  //  onChange={(e) => {
-                                  //   setFirstName(e.target.value);
-                                  // }}
+                                   onChange={(e) => {
+                                    setFirstName(e.target.value);
+                                  }}
                                   />
                         </div>
                     </div>
@@ -76,9 +123,9 @@ const AddPatient = ({onSendAppointment, lastId }) => {
                         </label>
                         <div className="mt-1 sm:mt-0 sm:col-span-2 h-10">
                             <input type="text" name="LastName" id="LastName"
-                                  //  onChange={(e) => {
-                                  //   setLastName(e.target.value);
-                                  // }}
+                                   onChange={(e) => {
+                                    setLastName(e.target.value);
+                                  }}
                                    className="max-w-lg block w-72 h-128 md:h-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:max-w-xs sm:text-sm border border-solid border-gray-300 rounded-md"/>
                         </div>
                     </div>
@@ -103,36 +150,57 @@ const AddPatient = ({onSendAppointment, lastId }) => {
                         <div className="mt-1 sm:mt-0 sm:col-span-2 h-10">
                             <input type="email" name="email" id="emails"
                             placeholder="example@gmail.com"
-                            // onChange={(e) => {
-                            //     setEmailAddress(e.target.value);
-                            //   }}  
+                            onChange={(e) => {
+                                setEmailAddress(e.target.value);
+                              }}  
                             className="max-w-lg block w-72 h-128 md:h-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:max-w-xs sm:text-sm border border-solid border-gray-300 rounded-md"/>
                             </div>
                     </div>
 
-                    <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start  sm:pt-5">
-                        <label htmlFor="password" className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
-                            Password
+                    <div className="relative w-full mb-3">
+                        <label
+                          className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"
+                          htmlFor="grid-password"
+                        >
+                          Password
                         </label>
-                        <div className="mt-1 sm:mt-0 sm:col-span-2 h-10">
-                            <input type="password" name="password" id="pass" 
-                            className="max-w-lg block w-72 h-128 md:h-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:max-w-xs sm:text-sm border border-solid border-gray-300 rounded-md"/>
-                            </div>
-                    </div>
-
-                    <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start  sm:pt-5">
-                        <label htmlFor="password" className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
-                            Confirm Password
+                        <div className="mt-1 sm:mt-0 sm:col-span-2 h-10"></div>
+                        <input
+                          type="password"
+                          className="border-0 px-3 py-3 placeholder-gray-400 text-gray-700 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full"
+                          
+                          style={{ transition: "all .15s ease" }}
+                          onChange={(e) => {
+                            setPassword(e.target.value);
+                          }}
+                        />
+                      </div>
+                      <div className="relative w-full mb-3">
+                        <label
+                          className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"
+                          htmlFor="grid-password"
+                        >
+                          Confirm Password
                         </label>
-                        <div className="mt-1 sm:mt-0 sm:col-span-2 h-10">
-                            <input type="password" name="password" id="pass"
-                            className="max-w-lg block w-72 h-128 md:h-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:max-w-xs sm:text-sm border border-solid border-gray-300 rounded-md"/>
-                            </div>
-                    </div>
+                        <input
+                          type="password"
+                          className="border-0 px-3 py-3 placeholder-gray-400 text-gray-700 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full"
+                          
+                          style={{ transition: "all .15s ease" }}
+                          onChange={(e) => {
+                            setPasswordConfirm(e.target.value);
+                          }}
+                        />
+                      </div>
                     <div className="pt-5">
                         <div className="flex justify-center">
-                            <button type="submit"
-                                    className="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-black  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-400">
+                           <button
+                         className="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-black  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-400"
+                          type="button"
+                          style={{ transition: "all .15s ease" }}
+                          onClick={() => onCreateAccount()}
+                          
+                        >
                                 Create
                             </button>
                         </div>
@@ -146,5 +214,3 @@ const AddPatient = ({onSendAppointment, lastId }) => {
         </>
     )
 }
-
-export default AddPatient;

@@ -6,6 +6,7 @@ import Signup from './components/signup/Signup';
 import Layout from './components/dashboard/Layout';
 import Admin from './components/dashboard/admin';
 import Form from './components/dashboard/Form';
+import Formadmin from './components/dashboard/adminsidebar/Formadmin';
 import AboutUs from './components/aboutus';
 import Calendar from './components/dashboard/Calendar';
 import Doctor from './components/dashboard/doctor';

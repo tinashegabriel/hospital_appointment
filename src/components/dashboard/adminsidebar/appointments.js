@@ -7,7 +7,7 @@ import swal from 'sweetalert';
 
     const Appointment = ({props }) => {
         const [isOpenSidebar, setIsOpenSidebar] = useState(false)
-        const [appointments, setAppointments] = React.useState('');
+        const [appointments, setAppointments] = React.useState([]);
         const [patients, setPatients] = React.useState([]);
     
         const toggleSidebar = () => {
@@ -22,7 +22,7 @@ import swal from 'sweetalert';
         
                     const options = {
                         method: 'GET',
-                        url: '/doctor/appointments',
+                        url: '/admin/appointments',
                         headers: { 
                             'Content-Type': 'application/json',
                             'Authorization': `Bearer ${localStorage.getItem('accessToken')}` 
@@ -38,8 +38,8 @@ import swal from 'sweetalert';
         
                     if (resp_data.code == 200) {
         
-                      setAppointments(resp_data.payload.result.length)
-                      setPatients(resp_data.payload.result)
+                      setAppointments(resp_data.payload.result)
+                     
                         // return res;
                     } else if (resp_data.code == 400) {
         
@@ -68,35 +68,37 @@ import swal from 'sweetalert';
                 getUser();
     
           }, []);
+       
+        const [selected,setSelected] = useState("");
+        const[open, setOpen] = useState("false");
     
-        let [toggleForm, setToggleForm] = useState(false);
-
-        const patientList = () => {
-
-            console.log(patients)
+        const appointmentList = () => {
+    
+            console.log(appointments)
              return (<tbody className="divide-y divide-gray-200">
              
-                     {patients.map((patient) => (
+                     {appointments.map((appointment) => (
                          <tr>
      
                             <td className="px-6 py-4 text-sm font-medium text-gray-800 whitespace-nowrap">
-                                {patient.id}
+                                {appointment.id}
                             </td>
                             <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
-                                {patient.first_name}
+                                {appointment.first_name}
                             </td>
                             <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
-                                {patient.last_name}
+                                {appointment.last_name}
                             </td>
                             <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
-                                {patient.email_address}
+                                {appointment.email_address}
                             </td>
                             <td className="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
-                                    {patient.appointment_date}
+                            {appointment.appointment_date}
                             </td>
-                            {/* <td className="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
-                                   {patient.symptoms}
-                            </td> */}
+                            <td className="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
+                            {appointment.doc_name} {appointment.doc_surname}
+                            </td>
+    
                         </tr>
                          ))}
      
@@ -104,7 +106,7 @@ import swal from 'sweetalert';
              
              );
            };
-        
+    
         return (
             <>
                 <div className="flex h-screen bg-gray-200">
@@ -202,7 +204,7 @@ import swal from 'sweetalert';
                                         </th>
                                     </tr>
                                 </thead>
-                                {patientList()}
+                                {appointmentList()}
                             </table>
                         </div>
                     </div>

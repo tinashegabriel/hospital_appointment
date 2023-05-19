@@ -399,6 +399,7 @@ class Chatbot extends Component {
       <ChatBot className="grid justify-items-center"
        steps={[
         {
+          
             id:'intro', 
             message:'Hi, thanks for your visit, can we help you in any way?', 
             trigger:'intro-user',
@@ -420,6 +421,7 @@ class Chatbot extends Component {
               {value:'n', label:'No', trigger:'no-response'},
             ] 
            },
+          
            {
             id:'yes-response', 
             message:'Great! Provide your Email address', 
