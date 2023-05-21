@@ -23,7 +23,7 @@ import AdminSidebar from '../adminSidebar';
     
                 const options = {
                     method: 'GET',
-                    url: '/doctors',
+                    url: '/admin/doctors',
                     headers: { 
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${localStorage.getItem('accessToken')}` 

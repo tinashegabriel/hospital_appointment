@@ -240,62 +240,62 @@ def get_user_info(emailAddress):
             db.close()
 
 
-def create_booking_admin(email,doctor_id,firstName,lastName,emailAddress,phone,D_O_B,address,city,applied_before,procedure, appointment_date,appointment_time,symptoms):
-    db = None
-    try:
-        db = connect()
+# def create_booking_admin(email,user_id,doctor_id,firstName,lastName,emailAddress,phone,D_O_B,address,city,applied_before,procedure, appointment_date,appointment_time,symptoms):
+#     db = None
+#     try:
+#         db = connect()
 
-        print(db)
+#         print(db)
 
-        if db != None:
-            mycursor = db.cursor()
-            print("1")
-            mySql = "SELECT * FROM patients WHERE email_address = %s"
+#         if db != None:
+#             mycursor = db.cursor()
+#             print("1")
+#             mySql = "SELECT * FROM patients WHERE email_address = %s"
 
-            values = (email,)
+#             values = (email,)
 
-            mycursor.execute(mySql,values)
+#             mycursor.execute(mySql,values)
 
-            record = mycursor.fetchone()
+#             record = mycursor.fetchone()
 
-            print(record[0])
+#             print(record[0])
 
-            if not record:
-                return MessageResponseItem(code=203, message="Account does not exists")
+#             if not record:
+#                 return MessageResponseItem(code=203, message="Account does not exists")
             
-            else:
+#             else:
 
-                sql = "INSERT INTO appointments (user_id,doctor_id,first_name, last_name, date_of_birth, email_address, phone_number, home_address, city, applied_bofore, appointment_procedure, appointment_date, appointment_time, symptoms) VALUES ( %s,  %s,%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+#                 sql = "INSERT INTO appointments (user_id,doctor_id,first_name, last_name, date_of_birth, email_address, phone_number, home_address, city, applied_bofore, appointment_procedure, appointment_date, appointment_time, symptoms) VALUES ( %s,  %s,%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
 
-                val = (record[0],1,firstName,lastName,D_O_B,emailAddress,phone,address,city,applied_before,procedure,appointment_date,appointment_time,symptoms)
+#                 val = (user_id,doctor_id,firstName,lastName,D_O_B,emailAddress,phone,address,city,applied_before,procedure,appointment_date,appointment_time,symptoms)
 
-                mycursor.execute(sql, val)
+#                 mycursor.execute(sql, val)
 
-                db.commit()
+#                 db.commit()
 
-                print(mycursor.rowcount, "record inserted.")
+#                 print(mycursor.rowcount, "record inserted.")
 
-                print(mycursor.lastrowid)
+#                 print(mycursor.lastrowid)
 
-                last_id = mycursor.lastrowid
-                if last_id >0:
-                    email_sent = send_email(emailAddress,firstName, lastName, appointment_date, appointment_time, "R. Bumhudza")
-                    # email_sent = send_emails()
-                    print(email_sent)
-                    db.close()
+#                 last_id = mycursor.lastrowid
+#                 if last_id >0:
+#                     email_sent = send_email(emailAddress,firstName, lastName, appointment_date, appointment_time, "R. Bumhudza")
+#                     # email_sent = send_emails()
+#                     print(email_sent)
+#                     db.close()
 
-                    return MessageResponseItem(code=200, message="Appointment was created successfully")
-                else:
-                    return MessageResponseItem(code=400, message="Failed to create an account")
+#                     return MessageResponseItem(code=200, message="Appointment was created successfully")
+#                 else:
+#                     return MessageResponseItem(code=400, message="Failed to create an account")
 
-        return MessageResponseItem(code=405, message="Failed to connect !!!")
+#         return MessageResponseItem(code=405, message="Failed to connect !!!")
             
-    except Exception as e:
-        traceback.print_exc()
-        raise Exception(f"Exception: (create_patient) -> {e}")
-    finally:
-        if db is not None and db.is_connected():
-            db.close()
+#     except Exception as e:
+#         traceback.print_exc()
+#         raise Exception(f"Exception: (create_patient) -> {e}")
+#     finally:
+#         if db is not None and db.is_connected():
+#             db.close()
 
 def create_booking(email,doctor_id,firstName,lastName,emailAddress,phone,D_O_B,address,city,applied_before,procedure, appointment_date,appointment_time,symptoms):
     db = None
@@ -355,7 +355,7 @@ def create_booking(email,doctor_id,firstName,lastName,emailAddress,phone,D_O_B,a
             db.close()
 
 
-def create_booking_admin(email,doctor_id,firstName,lastName,emailAddress,phone,D_O_B,address,city,applied_before,procedure, appointment_date,appointment_time,symptoms):
+def create_booking_admin(email,user_id,doctor_id,firstName,lastName,emailAddress,phone,D_O_B,address,city,applied_before,procedure, appointment_date,appointment_time,symptoms):
     db = None
     try:
         db = connect()
@@ -382,7 +382,7 @@ def create_booking_admin(email,doctor_id,firstName,lastName,emailAddress,phone,D
 
                 sql = "INSERT INTO appointments (user_id,doctor_id,first_name, last_name, date_of_birth, email_address, phone_number, home_address, city, applied_bofore, appointment_procedure, appointment_date, appointment_time, symptoms) VALUES ( %s,  %s,%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
 
-                val = (record[0],1,firstName,lastName,D_O_B,emailAddress,phone,address,city,applied_before,procedure,appointment_date,appointment_time,symptoms)
+                val = (user_id,1,firstName,lastName,D_O_B,emailAddress,phone,address,city,applied_before,procedure,appointment_date,appointment_time,symptoms)
 
                 mycursor.execute(sql, val)
 

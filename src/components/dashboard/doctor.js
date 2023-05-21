@@ -21,6 +21,7 @@ const Doctor = ({props }) => {
     const [isOpenSidebar, setIsOpenSidebar] = useState(false)
     const [appointments, setAppointments] = React.useState('');
     const [patients, setPatients] = React.useState([]);
+    const [doctors, setDoctors] = React.useState('');
 
     const toggleSidebar = () => {
       setIsOpenSidebar(!isOpenSidebar)
@@ -78,6 +79,57 @@ const Doctor = ({props }) => {
               }
             };
             getUser();
+
+            const getDoctors = async () => {
+                try {
+      
+                  console.log(localStorage.getItem('accessToken'))         
+      
+                  const options = {
+                      method: 'GET',
+                      url: '/doctors',
+                      headers: { 
+                          'Content-Type': 'application/json',
+                          'Authorization': `Bearer ${localStorage.getItem('accessToken')}` 
+                      }
+                  };
+      
+      
+                  let resp = await axios
+                      .request(options)
+      
+                  let resp_data = resp.data
+                  console.log(resp_data)
+      
+                  if (resp_data.code == 200) {
+      
+                    setDoctors(resp_data.payload.result.length)
+                      // return res;
+                  } else if (resp_data.code == 400) {
+      
+                      swal({
+                          title: "Oops.., Sorry!!!",
+                          text: "Failed to lget the data !!!",
+                          icon: "error",
+                          button: "Cancel",
+                        });
+                      // return res;
+                  }
+      
+      
+                  console.log("null")
+      
+                  return null
+      
+                } catch (error) {
+      
+                    console.log("Exception")
+                    console.log(error)
+      
+                    return null;
+                }
+              };
+              getDoctors();
 
       }, []);
 
@@ -160,7 +212,7 @@ const Doctor = ({props }) => {
                    Total Available Doctors 
                   </Typography>
                   <Typography>
-                    0
+                    {doctors}
                   </Typography>
                 </CardBody>
                 <CardFooter divider className="flex items-center justify-between py-3">
@@ -182,7 +234,7 @@ const Doctor = ({props }) => {
                    Total Available Patients  
                   </Typography>
                   <Typography>
-                    0
+                    {/* {patients} */}
                   </Typography>
                 </CardBody>
                 <CardFooter divider className="flex items-center justify-between py-3">

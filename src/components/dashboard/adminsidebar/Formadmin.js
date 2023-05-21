@@ -24,6 +24,8 @@ export default function Formadmin() {
     const [token, setToken] = React.useState('');
     const [doctors,setDoctors] = useState([]);
     const [docID, setdocId] = React.useState('');
+    const [patients,setPatients] = useState([]);
+    const [patientID, setpatientId] = React.useState('');
 
     useEffect(() => {
             const getDoctors = async () => {
@@ -33,7 +35,7 @@ export default function Formadmin() {
     
                 const options = {
                     method: 'GET',
-                    url: '/doctors',
+                    url: '/admin/doctors',
                     headers: { 
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${localStorage.getItem('accessToken')}` 
@@ -73,7 +75,57 @@ export default function Formadmin() {
               }
             };
             getDoctors();
+            const getPatients = async () => {
+                try {
+      
+                  console.log(localStorage.getItem('accessToken'))         
+      
+                  const options = {
+                      method: 'GET',
+                      url: '/admin/patients',
+                      headers: { 
+                          'Content-Type': 'application/json',
+                          'Authorization': `Bearer ${localStorage.getItem('accessToken')}` 
+                      }
+                  };
+      
+      
+                  let resp = await axios
+                      .request(options)
+      
+                  let resp_data = resp.data
+                  console.log(resp_data)
+      
+                  if (resp_data.code == 200) {
+                      console.log(resp_data.payload.result)
+                    setPatients(resp_data.payload.result)
+                    console.log(doctors)
+                  } else if (resp_data.code == 400) {
+      
+                      swal({
+                          title: "Oops.., Sorry!!!",
+                          text: "Failed to lget the data !!!",
+                          icon: "error",
+                          button: "Cancel",
+                        });
+                      // return res;
+                  }
+      
+                  return null
+      
+                } catch (error) {
+      
+                    console.log("Exception")
+                    console.log(error)
+      
+                    return null;
+                }
+              };
+              getPatients();
+        
       }, []);
+
+      
     
       const handleChange = (procedure) => {
         console.log('value:', procedure);
@@ -83,6 +135,11 @@ export default function Formadmin() {
       const handleDocChange = (docID) => {
         console.log('value:', docID);
         setdocId(docID);
+      };
+
+      const handlePatientChange = (patientID) => {
+        console.log('value:', patientID);
+        setpatientId(patientID);
       };
 
       const handleTimeChange = (appointment_time) => {
@@ -97,6 +154,7 @@ export default function Formadmin() {
 
             const data = {
                 docIds: docID,
+                userIds: patientID,
               FirstName: firstName,
               LastName: lastName,
               EmailAddress: emailAddress,
@@ -185,13 +243,25 @@ export default function Formadmin() {
         );
       };
 
+      const patientsDropDown = () => {
+        
+       
+        return (<Select label="Please Select Patient" value={patientID} onChange={handlePatientChange}>
+        
+                    {patients.map((patient) => (
+                        <Option key={patient.id} value={patient.id} >{patient.first_name} {patient.last_name}</Option>
+                    ))}
+                    
+                </Select>
+        );
+      };
     return (
         <>
           <main>
                 <div>
                 <div className="pl-32 pr-4 pb-4 justify-center">
             
-                    <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start  sm:pt-5">
+                    {/* <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start  sm:pt-5">
                         <label htmlFor="FirstName" className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
                             First Name
                         </label>
@@ -217,6 +287,15 @@ export default function Formadmin() {
                                   }}
                                    className="max-w-lg block w-72 h-128 md:h-full shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:max-w-xs sm:text-sm border border-solid border-gray-300 rounded-md"/>
                         </div>
+                    </div> */}
+                    <div className="sm:grid sm:grid-cols-3 sm:gap-2 sm:items-start  sm:pt-5">
+                        <label htmlFor="LastName" className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
+                            Patient
+                        </label>
+                            <div className="w-72 mt-1 sm:mt-0 sm:col-span-2">
+                                {patientsDropDown()}
+                                </div>
+
                     </div>
                     <div className="sm:grid sm:grid-cols-3 sm:gap-2 sm:items-start  sm:pt-5">
                         <label htmlFor="LastName" className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">

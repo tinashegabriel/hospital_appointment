@@ -21,6 +21,7 @@ const Admin = ({props }) => {
   const [isOpenSidebar, setIsOpenSidebar] = useState(false)
   const [appointments, setAppointments] = React.useState('');
   const [doctors, setDoctors] = React.useState('');
+  const [patients, setPatients] = React.useState('');
 
   useEffect(() => {
     const getUser = async () => {
@@ -73,7 +74,58 @@ const Admin = ({props }) => {
           }
         };
         getUser();
-        const getDoctor = async () => {
+        const getPatients = async () => {
+          try {
+
+            console.log(localStorage.getItem('accessToken'))         
+
+            const options = {
+                method: 'GET',
+                url: '/admin/patients',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('accessToken')}` 
+                }
+            };
+
+
+            let resp = await axios
+                .request(options)
+
+            let resp_data = resp.data
+            console.log(resp_data)
+
+            if (resp_data.code == 200) {
+
+              setPatients(resp_data.payload.result.length)
+                // return res;
+            } else if (resp_data.code == 400) {
+
+                swal({
+                    title: "Oops.., Sorry!!!",
+                    text: "Failed to lget the data !!!",
+                    icon: "error",
+                    button: "Cancel",
+                  });
+                // return res;
+            }
+
+
+            console.log("null")
+
+            return null
+
+          } catch (error) {
+
+              console.log("Exception")
+              console.log(error)
+
+              return null;
+          }
+        };
+        getPatients();
+        
+      const getDoctors = async () => {
           try {
 
             console.log(localStorage.getItem('accessToken'))         
@@ -122,7 +174,7 @@ const Admin = ({props }) => {
               return null;
           }
         };
-        getDoctor();
+        getDoctors();
   }, []);
 
   const toggleSidebar = () => {
@@ -195,7 +247,7 @@ const Admin = ({props }) => {
                    Total Patients Available 
                   </Typography>
                   <Typography>
-                    0
+                    {patients}
                   </Typography>
                 </CardBody>
                 <CardFooter divider className="flex items-center justify-between py-3">

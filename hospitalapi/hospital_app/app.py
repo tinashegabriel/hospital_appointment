@@ -499,13 +499,14 @@ async def appointments(jwt_token = Depends(http_scheme)):
     
         raise HTTPException(status_code=500, detail=f"{e}")
 
-@app.post("admin/appointment", tags=["admin"])
-async def book_appointment(appointmentDto: AppointmentDto=Body(...), jwt_token = Depends(http_scheme)):
+@app.post("/admin/appointment", tags=["admin"])
+async def book_appointment(appointmentDto: AdminAppointmentDto=Body(...), jwt_token = Depends(http_scheme)):
     try:
         jwt_token = jwt.decode(jwt_token.credentials, SECRET, algorithms=["HS256"])
         email = jwt_token['emailAddress']
 
-        result = create_booking_admin(email,appointmentDto.docIds,
+        result = create_booking_admin(email,
+                                    appointmentDto.docIds,
                                     appointmentDto.FirstName, 
                                     appointmentDto.LastName, 
                                     appointmentDto.EmailAddress,
