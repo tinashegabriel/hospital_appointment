@@ -54,6 +54,7 @@ class DoctorDto(BaseModel):
     PhoneNumber: Optional[str]
     EmailAddress: str
     HomeAddress: Optional[str]
+    Type: str
     Password: str
 
 class AppointmentDto(BaseModel):
@@ -74,8 +75,6 @@ class AppointmentDto(BaseModel):
 class AdminAppointmentDto(BaseModel):
     docIds: int
     userIds: int
-    FirstName: str
-    LastName: str
     EmailAddress: str
     Phonenumber: str
     D_O_B: str

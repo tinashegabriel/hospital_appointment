@@ -355,7 +355,7 @@ def create_booking(email,doctor_id,firstName,lastName,emailAddress,phone,D_O_B,a
             db.close()
 
 
-def create_booking_admin(email,user_id,doctor_id,firstName,lastName,emailAddress,phone,D_O_B,address,city,applied_before,procedure, appointment_date,appointment_time,symptoms):
+def create_booking_admin(email,user_id,doctor_id,emailAddress,phone,D_O_B,address,city,applied_before,procedure, appointment_date,appointment_time,symptoms):
     db = None
     try:
         db = connect()
@@ -365,9 +365,9 @@ def create_booking_admin(email,user_id,doctor_id,firstName,lastName,emailAddress
         if db != None:
             mycursor = db.cursor()
             print("1")
-            mySql = "SELECT * FROM patients WHERE email_address = %s"
+            mySql = "SELECT * FROM patients WHERE id = %s"
 
-            values = (email,)
+            values = (user_id,)
 
             mycursor.execute(mySql,values)
 
@@ -382,7 +382,7 @@ def create_booking_admin(email,user_id,doctor_id,firstName,lastName,emailAddress
 
                 sql = "INSERT INTO appointments (user_id,doctor_id,first_name, last_name, date_of_birth, email_address, phone_number, home_address, city, applied_bofore, appointment_procedure, appointment_date, appointment_time, symptoms) VALUES ( %s,  %s,%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
 
-                val = (user_id,1,firstName,lastName,D_O_B,emailAddress,phone,address,city,applied_before,procedure,appointment_date,appointment_time,symptoms)
+                val = (user_id,doctor_id,record[1],record[2],D_O_B,emailAddress,phone,address,city,applied_before,procedure,appointment_date,appointment_time,symptoms)
 
                 mycursor.execute(sql, val)
 
@@ -394,7 +394,17 @@ def create_booking_admin(email,user_id,doctor_id,firstName,lastName,emailAddress
 
                 last_id = mycursor.lastrowid
                 if last_id >0:
-                    email_sent = send_email(emailAddress,firstName, lastName, appointment_date, appointment_time, "R. Bumhudza")
+                    mySql = "SELECT * FROM doctors WHERE id = %s"
+
+                    values = (doctor_id,)
+
+                    mycursor.execute(mySql,values)
+
+                    records = mycursor.fetchone()
+
+                    doc_name = f"{records[1]} {records[2]}"
+
+                    email_sent = send_email(emailAddress,record[1], record[2], appointment_date, appointment_time, doc_name)
                     # email_sent = send_emails()
                     print(email_sent)
                     db.close()
@@ -980,7 +990,7 @@ def create_admin(firstName,lastName,emailAddress,password):
         if db is not None and db.is_connected():
             db.close()
 
-def add_doctor(first_name, last_name, gender, phone_number, email_address, home_address,password):
+def add_doctor(first_name, last_name, gender, phone_number, email_address, home_address,doc_type,password):
     db = None
     try:
         db = connect()
@@ -990,9 +1000,9 @@ def add_doctor(first_name, last_name, gender, phone_number, email_address, home_
         if db != None:
             mycursor = db.cursor()
             print("1")
-            sql = "INSERT INTO doctors (first_name, last_name, gender, phone_number, home_address) VALUES (%s, %s, %s, %s, %s)"
+            sql = "INSERT INTO doctors (first_name, last_name, gender, phone_number, home_address,doc_type) VALUES (%s, %s, %s, %s, %s, %s)"
 
-            val = (first_name, last_name, gender, phone_number, home_address)
+            val = (first_name, last_name, gender, phone_number, home_address, doc_type)
 
             mycursor.execute(sql, val)
 

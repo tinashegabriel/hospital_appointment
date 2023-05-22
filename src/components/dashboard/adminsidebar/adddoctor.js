@@ -15,6 +15,7 @@ const AddDoctor = () => {
     const [emailAddress, setEmailAddress] = React.useState('');
     const [password, setPassword] = React.useState('');
     const [passwordConfirm, setPasswordConfirm] = React.useState('');
+    const [doc_type, setDocType] = React.useState('');
     
 
     const toggleSidebar = () => {
@@ -23,6 +24,11 @@ const AddDoctor = () => {
     const handleChange = (gender) => {
         console.log('value:', gender);
         setGender(gender);
+      };
+
+    const handleDocTpye = (doc_type) => {
+        console.log('value:', doc_type);
+        setDocType(doc_type);
       };
 
     const onCreateDoctor = async () => {
@@ -34,6 +40,7 @@ const AddDoctor = () => {
                 LastName: lastName,
                 Gender: gender,
                 EmailAddress: emailAddress,
+                Type: doc_type,
                 Password: password
             };
             
@@ -145,7 +152,23 @@ const AddDoctor = () => {
                                 </Select>
                                 </div>
 
-                        </div>
+                    </div>
+
+                    <div className="sm:grid sm:grid-cols-3 sm:gap-2 sm:items-start  sm:pt-5">
+                        <label htmlFor="type" className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
+                            Type
+                        </label>
+                            <div className="w-72 mt-1 sm:mt-0 sm:col-span-2">
+                                <Select label="Select Type" value={doc_type} onChange={handleDocTpye}>
+                                    <Option value="General Doctor" >General Doctor</Option>
+                                    <Option value="Radiologist" >Radiologist</Option>
+                                    <Option value="Cardiologist" >Cardiologist</Option>
+                                    <Option value="Pediatrician" >Pediatrician</Option>
+                                    <Option value="Gynecologist" >Gynecologist</Option>
+                                </Select>
+                            </div>
+
+                    </div>
 
                     <div className="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start  sm:pt-5">
                         <label htmlFor="email" className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
@@ -188,21 +211,7 @@ const AddDoctor = () => {
                             />
                             </div>
                     </div>
-                    <div className="sm:grid sm:grid-cols-3 sm:gap-2 sm:items-start  sm:pt-5">
-                        <label htmlFor="type" className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2">
-                            Type
-                        </label>
-                            <div className="w-72 mt-1 sm:mt-0 sm:col-span-2">
-                                <Select label="Select Type" >
-                                    <Option>General Doctor</Option>
-                                    <Option>Radiologist</Option>
-                                    <Option>Cardiologist</Option>
-                                    <Option>Pediatrician</Option>
-                                    <Option>Gynecologist</Option>
-                                </Select>
-                                </div>
-
-                        </div>
+                    
 
                     <div className="pt-5">
                         <div className="flex justify-center">

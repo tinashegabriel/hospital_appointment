@@ -506,9 +506,8 @@ async def book_appointment(appointmentDto: AdminAppointmentDto=Body(...), jwt_to
         email = jwt_token['emailAddress']
 
         result = create_booking_admin(email,
+                                    appointmentDto.userIds,
                                     appointmentDto.docIds,
-                                    appointmentDto.FirstName, 
-                                    appointmentDto.LastName, 
                                     appointmentDto.EmailAddress,
                                     appointmentDto.Phonenumber,
                                     appointmentDto.D_O_B, 
@@ -653,9 +652,10 @@ async def create_doctor(doctorDto: DoctorDto=Body(...), jwt_token = Depends(http
         phone_number = doctorDto.PhoneNumber
         email_address = doctorDto.EmailAddress
         home_address = doctorDto.HomeAddress
+        doc_type = doctorDto.Type
         password = doctorDto.Password
 
-        result = add_doctor(first_name, last_name, gender, phone_number, email_address, home_address,password)
+        result = add_doctor(first_name, last_name, gender, phone_number, email_address, home_address,doc_type,password)
 
         return MessageResponseItem(message = result.message, code = result.code)
 

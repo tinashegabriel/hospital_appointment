@@ -155,8 +155,6 @@ export default function Formadmin() {
             const data = {
                 docIds: docID,
                 userIds: patientID,
-              FirstName: firstName,
-              LastName: lastName,
               EmailAddress: emailAddress,
               Phonenumber: phone_number,
               D_O_B: date_of_birth,
@@ -196,7 +194,7 @@ export default function Formadmin() {
                     button: "Proceed",
                   }).then((value) => {
 
-                    window.location.href = "/";
+                    window.location.href = "/addappointments";
                   })
                
                 // return res;
