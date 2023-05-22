@@ -242,6 +242,7 @@ class ReviewAppointment extends Component {
       homeaddress: '',
       city: '',
       applied: '',
+      pain:'',
       procedure: '',
       bdate: '',
       btime: '',
@@ -252,9 +253,9 @@ class ReviewAppointment extends Component {
 
   componentWillMount() {
     const { steps } = this.props;
-    const { bfullname, gender, bemail, birth, homeaddress, city, applied, procedure, bdate, btime, symptoms } = steps;
+    const { bfullname, gender, bemail, birth, homeaddress, city, applied, pain, procedure, bdate, btime, symptoms } = steps;
 
-    this.setState({ bfullname, gender, bemail, birth, homeaddress, city, applied, procedure, bdate, btime, symptoms });
+    this.setState({ bfullname, gender, bemail, birth, homeaddress, city, applied, pain, procedure, bdate, btime, symptoms });
 
     console.log(bfullname)
     console.log(gender)
@@ -263,6 +264,7 @@ class ReviewAppointment extends Component {
     console.log(homeaddress)
     console.log(city)
     console.log(applied)
+    console.log(pain)
     console.log(procedure)
     console.log(bdate)
     console.log(btime)
@@ -292,12 +294,12 @@ class ReviewAppointment extends Component {
             Appointment_time: btime.value,
             Symptoms: symptoms.value
           };
-          
+          console.log("Trying to book an appointment")
           console.log(data)
   
           const options = {
               method: 'POST',
-              url: '/appointment',
+              url: '/priority',
               headers: { 
                   'Content-Type': 'application/json',
                   'Authorization': `Bearer ${localStorage.getItem('accessToken')}` 
@@ -518,16 +520,27 @@ class Chatbot extends Component {
           },
           {
             id: 'bqn7',
-            message: 'Have you ever applied to our facility before?',
+            message: 'Select one of the following options!',
            trigger: 'applied',
           },
           {
             id:'applied', 
             options:[
-              {value:'yes', label:'Yes', trigger:'bqn8'},
-              {value:'no', label:'No', trigger:'bqn8'},
+              {value:'1', label:'Reffered by Doctor', trigger:'bqn8'},
+              {value:'2', label:'Treated before', trigger:'bqn8'},
+              {value:'3', label:'First Time', trigger:'bqn8a'},              
             ] 
            },
+           {
+            id: 'bqn8a',
+            message: 'Rate your pain level with a number between 0 and 5',
+           trigger: 'pain',
+          },
+          {
+            id: 'pain',
+            user: true,
+            trigger: 'bqn8',
+          },
            {
             id: 'bqn8',
             message: 'Which procedure do you want to make an appointment for?',

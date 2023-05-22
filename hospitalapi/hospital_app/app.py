@@ -285,6 +285,32 @@ async def get_appointments(jwt_token = Depends(http_scheme)):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"{e}")
 
+@app.get("/calender", responses={
+    200: {"message": "Success", "data": {'phone': '1234'}, "code": 200},
+    500: {"model": HTTPError, "description": "Raise"}
+},tags=["appointment"])
+async def get_calender(jwt_token = Depends(http_scheme)):
+    try:
+        jwt_token = jwt.decode(jwt_token.credentials, SECRET, algorithms=["HS256"])
+        emailAddress = jwt_token['emailAddress']
+        req = get_user_calender(emailAddress)
+
+        match req.code:
+            case 200:
+                return MessageResponsePayloadItem(message = 'Success',payload = req.payload, code = 200)
+            
+            case 404:
+                return MessageResponseItem(code=405, message="User not found")
+
+            case _:
+                return MessageResponseItem(code=500, message="Unknown error")
+
+    except jwt.exceptions.InvalidSignatureError:
+        raise HTTPException(status_code=403, detail="Not Valid")
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"{e}")
+
 @app.post("/appointment", tags=["appointment"])
 async def book_appointment(appointmentDto: AppointmentDto=Body(...), jwt_token = Depends(http_scheme)):
     try:
@@ -300,6 +326,35 @@ async def book_appointment(appointmentDto: AppointmentDto=Body(...), jwt_token =
                                     appointmentDto.Address, 
                                     appointmentDto.City, 
                                     appointmentDto.Applied_before,
+                                    appointmentDto.Procedure, 
+                                    appointmentDto.Appointment_date,
+                                    appointmentDto.Appointment_time,
+                                    appointmentDto.Symptoms)
+
+        return MessageResponseItem(message = result.message, code = result.code)
+
+    except jwt.exceptions.InvalidSignatureError:
+        raise HTTPException(status_code=403, detail="Not Valid")
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"{e}")
+
+@app.post("/priority", tags=["appointment"])
+async def priority_appointment(appointmentDto: PriorityAppointmentDto=Body(...), jwt_token = Depends(http_scheme)):
+    try:
+        jwt_token = jwt.decode(jwt_token.credentials, SECRET, algorithms=["HS256"])
+        email = jwt_token['emailAddress']
+
+        result = create_priority_booking(email,appointmentDto.docIds,
+                                    appointmentDto.FirstName, 
+                                    appointmentDto.LastName, 
+                                    appointmentDto.EmailAddress,
+                                    appointmentDto.Phonenumber,
+                                    appointmentDto.D_O_B, 
+                                    appointmentDto.Address, 
+                                    appointmentDto.City, 
+                                    appointmentDto.Applied_before,
+                                    appointmentDto.Pain, 
                                     appointmentDto.Procedure, 
                                     appointmentDto.Appointment_date,
                                     appointmentDto.Appointment_time,

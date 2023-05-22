@@ -12,7 +12,7 @@ const getUser = async () => {
 
       const options = {
           method: 'GET',
-          url: '/doctor/calender',
+          url: '/calender',
           headers: { 
               'Content-Type': 'application/json',
               'Authorization': `Bearer ${localStorage.getItem('accessToken')}` 
@@ -35,8 +35,8 @@ const getUser = async () => {
               const newData = [{
                   event_id: item.event_id,
                   title: item.title,
-                  start: new Date(2023, 3, Number(item.start_date), Number(item.start_time), 0),
-                  end: new Date(2023, 3, Number(item.start_date), Number(item.start_time), 45),
+                  start: new Date(2023, 4, Number(item.start_date), Number(item.start_time), 0),
+                  end: new Date(2023, 4, Number(item.start_date), Number(item.start_time), 45),
                   admin_id: 2,
                   color: "#900000"
                   },];

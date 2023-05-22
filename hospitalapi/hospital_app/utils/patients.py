@@ -9,6 +9,7 @@ from hospital_app.models.schema import MessageResponseItem, MessageResponsePaylo
 from hospital_app.utils.sendmail import MailSender
 from dateutil.relativedelta import relativedelta
 import math
+from datetime import date
 
 from .constants import *
 import pytz
@@ -354,6 +355,137 @@ def create_booking(email,doctor_id,firstName,lastName,emailAddress,phone,D_O_B,a
         if db is not None and db.is_connected():
             db.close()
 
+def create_priority_booking(email,doctor_id,firstName,lastName,emailAddress,phone,D_O_B,address,city,applied_before,pain,procedure, appointment_date,appointment_time,symptoms):
+    db = None
+    try:
+        db = connect()
+
+        print(db)
+
+        today = date.today()
+
+        print(today)
+
+        if applied_before == 1:
+
+            if db != None:
+                mycursor = db.cursor()
+                
+                print("1")
+                mySql = "SELECT * FROM patients WHERE email_address = %s"
+
+                values = (email,)
+
+                mycursor.execute(mySql,values)
+
+                record = mycursor.fetchone()
+
+                print(record[0])
+
+                if not record:
+                    return MessageResponseItem(code=203, message="Account does not exists")
+                
+                else:
+                    mySql = "SELECT * FROM appointments WHERE appointment_date = %s ORDER BY id DESC LIMIT 1"
+
+                    values = (today,)
+
+                    mycursor.execute(mySql,values)
+
+                    records = mycursor.fetchone()
+
+                    print(f"Selected appointment {records}")
+
+                    sql = "INSERT INTO appointments (user_id,doctor_id,first_name, last_name, date_of_birth, email_address, phone_number, home_address, city, applied_bofore, appointment_procedure, appointment_date, appointment_time, symptoms) VALUES ( %s,  %s,%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+
+                    val = (record[0],1,firstName,lastName,D_O_B,emailAddress,phone,address,city,applied_before,procedure,records[14],appointment_time,symptoms)
+
+                    mycursor.execute(sql, val)
+
+                    db.commit()
+
+                    print(mycursor.rowcount, "record inserted.")
+
+                    if mycursor.rowcount ==1:
+                        mycursors = db.cursor()
+
+                        sqls = "UPDATE appointments SET appointment_time = %s WHERE id = %s"
+
+                        vals = ("09:00",records[0])
+
+                        mycursors.execute(sqls,vals)
+
+                        db.commit()
+
+                        print(mycursors.rowcount, "record updated.")
+
+                        print(mycursors.lastrowid)
+
+                        last_id = mycursors.lastrowid
+                        if last_id >0:
+                            email_sent = send_email(emailAddress,firstName, lastName, appointment_date, appointment_time, "R. Bumhudza")
+                            # email_sent = send_emails()
+                            print(email_sent)
+                            db.close()
+
+                            return MessageResponseItem(code=200, message="Appointment was created successfully")
+                        else:
+                            return MessageResponseItem(code=400, message="Failed to create an account")
+
+            return MessageResponseItem(code=405, message="Failed to connect !!!")
+        
+        elif applied_before == 2:
+
+            if db != None:
+                mycursor = db.cursor()
+                print("1")
+                mySql = "SELECT * FROM patients WHERE email_address = %s"
+
+                values = (email,)
+
+                mycursor.execute(mySql,values)
+
+                record = mycursor.fetchone()
+
+                print(record[0])
+
+                if not record:
+                    return MessageResponseItem(code=203, message="Account does not exists")
+                
+                else:
+
+                    sql = "INSERT INTO appointments (user_id,doctor_id,first_name, last_name, date_of_birth, email_address, phone_number, home_address, city, applied_bofore, appointment_procedure, appointment_date, appointment_time, symptoms) VALUES ( %s,  %s,%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+
+                    val = (record[0],1,firstName,lastName,D_O_B,emailAddress,phone,address,city,applied_before,procedure,appointment_date,appointment_time,symptoms)
+
+                    mycursor.execute(sql, val)
+
+                    db.commit()
+
+                    print(mycursor.rowcount, "record inserted.")
+
+                    print(mycursor.lastrowid)
+
+                    last_id = mycursor.lastrowid
+                    if last_id >0:
+                        email_sent = send_email(emailAddress,firstName, lastName, appointment_date, appointment_time, "R. Bumhudza")
+                        # email_sent = send_emails()
+                        print(email_sent)
+                        db.close()
+
+                        return MessageResponseItem(code=200, message="Appointment was created successfully")
+                    else:
+                        return MessageResponseItem(code=400, message="Failed to create an account")
+
+            return MessageResponseItem(code=405, message="Failed to connect !!!")
+            
+    except Exception as e:
+        traceback.print_exc()
+        raise Exception(f"Exception: (Failed to create a prioritized appointment) -> {e}")
+    finally:
+        if db is not None and db.is_connected():
+            db.close()
+
 
 def create_booking_admin(email,user_id,doctor_id,emailAddress,phone,D_O_B,address,city,applied_before,procedure, appointment_date,appointment_time,symptoms):
     db = None
@@ -450,7 +582,7 @@ def get_user_appointments(emailAddress):
             else:
                 print(myresult[0])
 
-                sql = "SELECT * FROM appointments WHERE user_id = %s "
+                sql = "SELECT * FROM appointments JOIN doctors ON appointments.doctor_id = doctors.id WHERE user_id = %s "
 
                 user_id= myresult[0]
 
@@ -459,6 +591,8 @@ def get_user_appointments(emailAddress):
                 mycursor.execute(sql, val)
 
                 records = mycursor.fetchall()
+
+                print(records)
 
                 db.close()
 
@@ -494,7 +628,7 @@ def get_user_appointments(emailAddress):
             
     except Exception as e:
         traceback.print_exc()
-        raise Exception(f"Exception: (create_patient) -> {e}")
+        raise Exception(f"Exception: (Failed to get appointments) -> {e}")
     finally:
         if db is not None and db.is_connected():
             db.close()
@@ -937,6 +1071,78 @@ def get_doc_calender(emailAddress):
             db.close()
 
 
+def get_user_calender(emailAddress):
+    db = None
+    try:
+        db = connect()
+
+        print(db)
+
+        if db != None:
+            mycursor = db.cursor()
+            print("1")
+
+            sql = "SELECT id FROM patients WHERE email_address = %s "
+
+            val = (emailAddress,)
+
+            mycursor.execute(sql, val)
+
+            myresult = mycursor.fetchone()
+
+            
+
+            data = []
+            if not myresult:
+                return MessageResponseItem(code=203, message="Account does not exists")
+            else:
+                print(myresult[0])
+
+                sql = "SELECT * FROM appointments WHERE user_id = %s "
+
+                user_id= myresult[0]
+
+                val = (user_id,)
+
+                mycursor.execute(sql, val)
+
+                records = mycursor.fetchall()
+
+                db.close()
+                a = 1
+                for record in records:
+                    b = record[12]
+                    c = record[13]
+                    print(c)
+                    result_list = {
+                            "event_id": a,
+                            "title": record[14],
+                            "start_year": b[:4],
+                            "start_month": b[6:7],
+                            "start_date": b[8:10],
+                            "start_time": c[:2],
+                            "admin_id": 2,
+                            "color": "#900000"
+                            }
+                    a = a + 1
+
+                    data.append(result_list)
+
+                print(data)
+
+                return MessageResponsePayloadItem(code=200, message="User logged in successfully", payload={
+                "result": data
+                })
+
+
+        return MessageResponseItem(code=400, message="Account already exists")
+            
+    except Exception as e:
+        traceback.print_exc()
+        raise Exception(f"Exception: (create_patient) -> {e}")
+    finally:
+        if db is not None and db.is_connected():
+            db.close()
 
 def create_admin(firstName,lastName,emailAddress,password):
     db = None

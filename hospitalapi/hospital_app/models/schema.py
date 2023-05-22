@@ -72,6 +72,22 @@ class AppointmentDto(BaseModel):
     Appointment_time: str
     Symptoms: str
 
+class PriorityAppointmentDto(BaseModel):
+    docIds: int
+    FirstName: str
+    LastName: str
+    EmailAddress: str
+    Phonenumber: str
+    D_O_B: str
+    Address: str
+    City: str
+    Applied_before: int
+    Pain: Optional[int]
+    Procedure: str
+    Appointment_date: str
+    Appointment_time: str
+    Symptoms: str
+
 class AdminAppointmentDto(BaseModel):
     docIds: int
     userIds: int
