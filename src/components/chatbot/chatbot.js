@@ -400,20 +400,20 @@ class Chatbot extends Component {
           
       <ChatBot className="grid justify-items-center"
        steps={[
-        {
+        // {
           
-            id:'intro', 
-            message:'Hi, thanks for your visit, can we help you in any way?', 
-            trigger:'intro-user',
-           },
-           {
-            id:'intro-user', 
-            user:true,
-            trigger:'bot'
-           },
+        //     id:'intro', 
+        //     message:'Hi, thanks for your visit, can we help you in any way?', 
+        //     trigger:'intro-user',
+        //    },
+        //    {
+        //     id:'intro-user', 
+        //     user:true,
+        //     trigger:'bot'
+        //    },
         {
             id:'bot', 
-            message:'Do you already have an account?', 
+            message:'Hi, thanks for your visit. Do you already have an account?', 
             trigger:'user',
            },
            {
@@ -436,7 +436,7 @@ class Chatbot extends Component {
            },
            {
             id:'pass-response', 
-            message:'Great! Provide your password', 
+            message:'Great! What is your password?', 
             trigger:'loginpass',
            },
            {
@@ -526,9 +526,9 @@ class Chatbot extends Component {
           {
             id:'applied', 
             options:[
-              {value:'1', label:'Reffered by Doctor', trigger:'bqn8'},
-              {value:'2', label:'Treated before', trigger:'bqn8'},
-              {value:'3', label:'First Time', trigger:'bqn8a'},              
+              {value:'1', label:'Refered to by another Doctor', trigger:'bqn8'},
+              {value:'2', label:'Treated for this condition before', trigger:'bqn8'},
+              {value:'3', label:'First Time being treated', trigger:'bqn8a'},              
             ] 
            },
            {
@@ -543,7 +543,7 @@ class Chatbot extends Component {
           },
            {
             id: 'bqn8',
-            message: 'Which procedure do you want to make an appointment for?',
+            message: 'Which procedure do you want to make an appointment for? Pick Doctor Check if you are not sure',
            trigger: 'procedure',
           },
           {
@@ -603,7 +603,7 @@ class Chatbot extends Component {
           },
            {
             id: 'bqn13',
-            message: 'Thanks! Your data was submitted successfully! You can check the appointment vie the website and we have sent an email for the scheduled appointment.',
+            message: 'Thanks! Your data was submitted successfully! You can check the appointment via the website and we have sent an email for the scheduled appointment.',
             end: true
             
           },
