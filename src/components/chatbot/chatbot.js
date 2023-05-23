@@ -277,8 +277,9 @@ class ReviewAppointment extends Component {
     
     const onCreateBooking = async () => {
 
-      try {
-
+      if (pain === undefined) {
+        try {
+          
           const data = {
               docIds: 1,
             FirstName: firstName,
@@ -330,6 +331,65 @@ class ReviewAppointment extends Component {
   
           return null;
       }
+        
+      } else {
+        try {
+          
+          const data = {
+              docIds: 1,
+            FirstName: firstName,
+            LastName: lastName,
+            EmailAddress: bemail.value,
+            Phonenumber: "0772450254",
+            D_O_B: birth.value,
+            Address: homeaddress.value,
+            City: city.value,
+            Applied_before: applied.value,
+            Pain: pain.value,
+            Procedure: procedure.value,
+            Appointment_date: bdate.value,
+            Appointment_time: btime.value,
+            Symptoms: symptoms.value
+          };
+          console.log("Trying to book an appointment")
+          console.log(data)
+  
+          const options = {
+              method: 'POST',
+              url: '/priority',
+              headers: { 
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${localStorage.getItem('accessToken')}` 
+              },
+              data
+          };
+  
+  
+          let resp = await axios
+              .request(options)
+  
+          let resp_data = resp.data
+  
+          if (resp_data.code == 200) {
+            console.log('We have sent an email for the scheduled appointment')
+              // return res;
+          } else if (resp_data.code == 400) {
+  
+              // return res;
+          }
+
+          return null
+  
+      } catch (error) {
+  
+          console.log("Exception")
+          console.log(error)
+  
+          return null;
+      }
+      }
+
+      
   
   };
   

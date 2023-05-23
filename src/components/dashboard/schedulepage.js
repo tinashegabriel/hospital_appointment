@@ -2,7 +2,7 @@ import { Scheduler } from "@aldabil/react-scheduler";
 import React,{useState,useEffect } from 'react';
 import axios from 'axios';
 import swal from 'sweetalert';
-import { EVENTS } from "../events";
+import { EVENTS } from "../docevents";
 
 function ScheduleApp() {
     const [patients, setPatients] = React.useState([]);

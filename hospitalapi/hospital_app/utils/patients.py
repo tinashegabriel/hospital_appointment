@@ -398,7 +398,7 @@ def create_priority_booking(email,doctor_id,firstName,lastName,emailAddress,phon
 
                     sql = "INSERT INTO appointments (user_id,doctor_id,first_name, last_name, date_of_birth, email_address, phone_number, home_address, city, applied_bofore, appointment_procedure, appointment_date, appointment_time, symptoms) VALUES ( %s,  %s,%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
 
-                    val = (record[0],1,firstName,lastName,D_O_B,emailAddress,phone,address,city,applied_before,procedure,records[14],appointment_time,symptoms)
+                    val = (record[0],1,firstName,lastName,D_O_B,emailAddress,phone,address,city,applied_before,procedure,records[12],records[13],symptoms)
 
                     mycursor.execute(sql, val)
 
@@ -406,27 +406,40 @@ def create_priority_booking(email,doctor_id,firstName,lastName,emailAddress,phon
 
                     print(mycursor.rowcount, "record inserted.")
 
+                    db.close()
+                    
                     if mycursor.rowcount ==1:
-                        mycursors = db.cursor()
+                        b_time = ""
+                        if records[13] == "09:00":
+                            b_time = "10:00"
+                        elif records[13] == "10:00":
+                            b_time = "11:00"
+                        elif records[13] == "11:00":
+                            b_time = "12:00"
+                        elif records[13] == "12:00":
+                            b_time = "02:00"
+                        elif records[13] == "02:00":
+                            b_time = "03:00"
+
+                        cnx = connect()
+                        mycursors = cnx.cursor()
 
                         sqls = "UPDATE appointments SET appointment_time = %s WHERE id = %s"
 
-                        vals = ("09:00",records[0])
+                        vals = (b_time,records[0])
 
                         mycursors.execute(sqls,vals)
 
-                        db.commit()
+                        cnx.commit()
 
                         print(mycursors.rowcount, "record updated.")
 
-                        print(mycursors.lastrowid)
-
-                        last_id = mycursors.lastrowid
+                        last_id = mycursors.rowcount
                         if last_id >0:
                             email_sent = send_email(emailAddress,firstName, lastName, appointment_date, appointment_time, "R. Bumhudza")
                             # email_sent = send_emails()
                             print(email_sent)
-                            db.close()
+                            cnx.close()
 
                             return MessageResponseItem(code=200, message="Appointment was created successfully")
                         else:
@@ -438,6 +451,7 @@ def create_priority_booking(email,doctor_id,firstName,lastName,emailAddress,phon
 
             if db != None:
                 mycursor = db.cursor()
+                
                 print("1")
                 mySql = "SELECT * FROM patients WHERE email_address = %s"
 
@@ -453,10 +467,19 @@ def create_priority_booking(email,doctor_id,firstName,lastName,emailAddress,phon
                     return MessageResponseItem(code=203, message="Account does not exists")
                 
                 else:
+                    mySql = "SELECT * FROM appointments WHERE appointment_date = %s ORDER BY id DESC LIMIT 1"
+
+                    values = (today,)
+
+                    mycursor.execute(mySql,values)
+
+                    records = mycursor.fetchone()
+
+                    print(f"Selected appointment {records}")
 
                     sql = "INSERT INTO appointments (user_id,doctor_id,first_name, last_name, date_of_birth, email_address, phone_number, home_address, city, applied_bofore, appointment_procedure, appointment_date, appointment_time, symptoms) VALUES ( %s,  %s,%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
 
-                    val = (record[0],1,firstName,lastName,D_O_B,emailAddress,phone,address,city,applied_before,procedure,appointment_date,appointment_time,symptoms)
+                    val = (record[0],1,firstName,lastName,D_O_B,emailAddress,phone,address,city,applied_before,procedure,records[12],records[13],symptoms)
 
                     mycursor.execute(sql, val)
 
@@ -464,20 +487,190 @@ def create_priority_booking(email,doctor_id,firstName,lastName,emailAddress,phon
 
                     print(mycursor.rowcount, "record inserted.")
 
-                    print(mycursor.lastrowid)
+                    db.close()
+                    
+                    if mycursor.rowcount ==1:
+                        b_time = ""
+                        if records[13] == "09:00":
+                            b_time = "10:00"
+                        elif records[13] == "10:00":
+                            b_time = "11:00"
+                        elif records[13] == "11:00":
+                            b_time = "12:00"
+                        elif records[13] == "12:00":
+                            b_time = "02:00"
+                        elif records[13] == "02:00":
+                            b_time = "03:00"
 
-                    last_id = mycursor.lastrowid
-                    if last_id >0:
-                        email_sent = send_email(emailAddress,firstName, lastName, appointment_date, appointment_time, "R. Bumhudza")
-                        # email_sent = send_emails()
-                        print(email_sent)
-                        db.close()
+                        cnx = connect()
+                        mycursors = cnx.cursor()
 
-                        return MessageResponseItem(code=200, message="Appointment was created successfully")
+                        sqls = "UPDATE appointments SET appointment_time = %s WHERE id = %s"
+
+                        vals = (b_time,records[0])
+
+                        mycursors.execute(sqls,vals)
+
+                        cnx.commit()
+
+                        print(mycursors.rowcount, "record updated.")
+
+                        last_id = mycursors.rowcount
+                        if last_id >0:
+                            email_sent = send_email(emailAddress,firstName, lastName, appointment_date, appointment_time, "R. Bumhudza")
+                            # email_sent = send_emails()
+                            print(email_sent)
+                            cnx.close()
+
+                            return MessageResponseItem(code=200, message="Appointment was created successfully")
+                        else:
+                            return MessageResponseItem(code=400, message="Failed to create an account")
+        
+        elif applied_before == 3:
+
+            if pain in (3,4,5):
+
+                if db != None:
+                    mycursor = db.cursor()
+                    
+                    print("1")
+                    mySql = "SELECT * FROM patients WHERE email_address = %s"
+
+                    values = (email,)
+
+                    mycursor.execute(mySql,values)
+
+                    record = mycursor.fetchone()
+
+                    print(record[0])
+
+                    if not record:
+                        return MessageResponseItem(code=203, message="Account does not exists")
+                    
                     else:
-                        return MessageResponseItem(code=400, message="Failed to create an account")
+                        mySql = "SELECT * FROM appointments WHERE appointment_date = %s ORDER BY id DESC LIMIT 1"
 
-            return MessageResponseItem(code=405, message="Failed to connect !!!")
+                        values = (today,)
+
+                        mycursor.execute(mySql,values)
+
+                        records = mycursor.fetchone()
+
+                        print(f"Selected appointment {records}")
+
+                        sql = "INSERT INTO appointments (user_id,doctor_id,first_name, last_name, date_of_birth, email_address, phone_number, home_address, city, applied_bofore, appointment_procedure, appointment_date, appointment_time, symptoms) VALUES ( %s,  %s,%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+
+                        val = (record[0],1,firstName,lastName,D_O_B,emailAddress,phone,address,city,applied_before,procedure,records[12],records[13],symptoms)
+
+                        mycursor.execute(sql, val)
+
+                        db.commit()
+
+                        print(mycursor.rowcount, "record inserted.")
+
+                        db.close()
+                        
+                        if mycursor.rowcount ==1:
+                            b_time = ""
+                            if records[13] == "09:00":
+                                b_time = "10:00"
+                            elif records[13] == "10:00":
+                                b_time = "11:00"
+                            elif records[13] == "11:00":
+                                b_time = "12:00"
+                            elif records[13] == "12:00":
+                                b_time = "02:00"
+                            elif records[13] == "02:00":
+                                b_time = "03:00"
+
+                            cnx = connect()
+                            mycursors = cnx.cursor()
+
+                            sqls = "UPDATE appointments SET appointment_time = %s WHERE id = %s"
+
+                            vals = (b_time,records[0])
+
+                            mycursors.execute(sqls,vals)
+
+                            cnx.commit()
+
+                            print(mycursors.rowcount, "record updated.")
+
+                            last_id = mycursors.rowcount
+                            if last_id >0:
+                                email_sent = send_email(emailAddress,firstName, lastName, appointment_date, appointment_time, "R. Bumhudza")
+                                # email_sent = send_emails()
+                                print(email_sent)
+                                cnx.close()
+
+                                return MessageResponseItem(code=200, message="Appointment was created successfully")
+                            else:
+                                return MessageResponseItem(code=400, message="Failed to create an account")
+            else:
+
+                if db != None:
+                    mycursor = db.cursor()
+                    
+                    print("1")
+                    mySql = "SELECT * FROM patients WHERE email_address = %s"
+
+                    values = (email,)
+
+                    mycursor.execute(mySql,values)
+
+                    record = mycursor.fetchone()
+
+                    print(record[0])
+
+                    if not record:
+                        return MessageResponseItem(code=203, message="Account does not exists")
+                    
+                    else:
+                        mySql = "SELECT * FROM appointments WHERE appointment_date = %s ORDER BY id DESC LIMIT 1"
+
+                        values = (today,)
+
+                        mycursor.execute(mySql,values)
+
+                        records = mycursor.fetchone()
+
+                        print(f"Selected appointment {records}")
+
+                        b_time = ""
+                        if records[13] == appointment_time:
+                            b_time = "10:00"
+                        elif records[13] == appointment_time:
+                            b_time = "11:00"
+                        elif records[13] == appointment_time:
+                            b_time = "12:00"
+                        elif records[13] == appointment_time:
+                            b_time = "02:00"
+                        elif records[13] == appointment_time:
+                            b_time = "03:00"
+
+                        sql = "INSERT INTO appointments (user_id,doctor_id,first_name, last_name, date_of_birth, email_address, phone_number, home_address, city, applied_bofore, appointment_procedure, appointment_date, appointment_time, symptoms) VALUES ( %s,  %s,%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+
+                        val = (record[0],1,firstName,lastName,D_O_B,emailAddress,phone,address,city,applied_before,procedure,records[12],b_time,symptoms)
+
+                        mycursor.execute(sql, val)
+
+                        db.commit()
+
+                        print(mycursor.rowcount, "record inserted.")
+
+                        db.close()
+                        
+                        if mycursor.rowcount ==1:
+                            last_id = mycursor.rowcount
+                            if last_id >0:
+                                email_sent = send_email(emailAddress,firstName, lastName, appointment_date, appointment_time, "R. Bumhudza")
+                                # email_sent = send_emails()
+                                print(email_sent)
+                                cnx.close()
+
+                                return MessageResponseItem(code=200, message="Appointment was created successfully")
+                            else:
+                                return MessageResponseItem(code=400, message="Failed to create an account")
             
     except Exception as e:
         traceback.print_exc()
